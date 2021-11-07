@@ -1,6 +1,5 @@
 package no.kristiania.http.controllers;
 
-import no.kristiania.dao.QuestionDao;
 import no.kristiania.http.HttpMessage;
 import no.kristiania.http.HttpRequest;
 import no.kristiania.http.HttpResponse;
@@ -10,12 +9,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.SQLException;
 
-public class QuestionsController extends Controller {
-    private QuestionDao dao;
-
-    public QuestionsController(QuestionDao dao, HttpServer server) {
+public class FileController extends Controller {
+    public FileController(HttpServer server) {
         super(server);
-        this.dao = dao;
     }
 
     @Override

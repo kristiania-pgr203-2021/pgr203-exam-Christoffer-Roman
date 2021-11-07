@@ -1,17 +1,24 @@
 package no.kristiania.http;
 
+import no.kristiania.dao.QuestionDao;
+import no.kristiania.http.controllers.Controller;
+import no.kristiania.http.controllers.QuestionsController;
+import org.flywaydb.core.internal.jdbc.DriverDataSource;
+import org.postgresql.ds.PGSimpleDataSource;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.util.HashMap;
 
+
 public class HttpServer implements Runnable {
     private ServerSocket serverSocket;
     private final int port;
     private boolean running;
     private Path rootPath = Path.of("src/main/resources");
-    private HashMap<String, Controller> controllers;
+    private HashMap<String, Controller> controllers = new HashMap<>();
 
     public HttpServer(int port) {
         this.port = port;
@@ -20,6 +27,16 @@ public class HttpServer implements Runnable {
     public HttpServer() {
         this.port = 0;
         start();
+    }
+
+    public static void main(String[] args) {
+        HttpServer server = new HttpServer(8000);
+        QuestionDao dao = new QuestionDao(new PGSimpleDataSource());
+        server.addController("/questions.html", new QuestionsController(dao, server));
+    }
+
+    public boolean containsPath(String path) {
+        return controllers.containsKey(path);
     }
 
     public void run() {
@@ -55,6 +72,7 @@ public class HttpServer implements Runnable {
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }
+
     }
 
     public void setRoot(Path rootPath) {
@@ -66,5 +84,11 @@ public class HttpServer implements Runnable {
     }
 
     public void addController(String path, Controller controller) {
+        controllers.put(path, controller);
     }
+
+    public Controller GetController(String path) {
+        return controllers.get(path);
+    }
+
 }

@@ -6,23 +6,14 @@ import java.util.HashMap;
 
 public class HttpMessage {
 
-    public static String readLine(Socket socket) throws IOException{
-        StringBuilder result = new StringBuilder();
-        int c;
-        while((c = socket.getInputStream().read()) != '\r'){
-            result.append((char)c);
-        }
-        int expectedNewLine = socket.getInputStream().read();
-        assert expectedNewLine == '\n';
-        return result.toString();
+    private String path;
+    private HashMap<String, String> headers;
+
+    public HttpMessage(String path) {
+        this.path = path;
     }
 
-    public static String readBytes(Socket socket, int contentLength) throws IOException{
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < contentLength; i++) {
-            result.append((char)socket.getInputStream().read());
-        }
-        return result.toString();
+    public HttpMessage() {
     }
 
     public static HashMap<String, String> readInputHeaders(Socket socket) throws IOException {
@@ -61,5 +52,39 @@ public class HttpMessage {
         }
 
         return queryParams;
+    }
+
+    public static String readLine(Socket socket) throws IOException{
+        StringBuilder result = new StringBuilder();
+        int c;
+        while((c = socket.getInputStream().read()) != '\r'){
+            result.append((char)c);
+        }
+        int expectedNewLine = socket.getInputStream().read();
+        assert expectedNewLine == '\n';
+        return result.toString();
+    }
+
+    public static String readBytes(Socket socket, int contentLength) throws IOException{
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < contentLength; i++) {
+            result.append((char)socket.getInputStream().read());
+        }
+        return result.toString();
+    }
+
+    public static String getContentType(String path) {
+        String contentType;
+        contentType = "text/plain";
+        if (path.endsWith(".html")){
+            contentType = "text/html";
+        } else if (path.endsWith(".css")){
+            contentType = "text/css";
+        }
+        return contentType;
+    }
+
+    public String getPath() {
+        return path;
     }
 }

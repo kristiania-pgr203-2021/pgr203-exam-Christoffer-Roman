@@ -1,8 +1,11 @@
 package no.kristiania.http;
 
+import no.kristiania.http.controllers.Controller;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 
@@ -21,9 +24,7 @@ public class HttpWorker implements Runnable {
         try {
             String[] requestLine = HttpMessage.readLine(socket).split(" ", 3);
             headers = HttpMessage.readInputHeaders(socket);
-            String path = requestLine[1];
-            StringBuilder responseMessage;
-            String statusCode, query = null, contentType = "text/plain";
+            String path = requestLine[1], query;
 
             // Checking if path contains queries
             int questionPos = path.indexOf("?");
@@ -34,34 +35,27 @@ public class HttpWorker implements Runnable {
             // If no path is specified, just send to /index.html
             if (path.equals("/")) path = "/index.html";
 
-            if(server.getRootPath() != null && Files.exists(server.getRootPath().resolve(path.substring(1)))){
-                responseMessage = new StringBuilder(Files.readString(server.getRootPath().resolve(path.substring(1))));
-                contentType = getContentType(path);
-                statusCode = "200 OK";
-
-            } else {
-                responseMessage = new StringBuilder("NOT FOUND!");
-                statusCode = "404 NOT FOUND";
+            Controller controller;
+            if ((controller = server.GetController(path)) != null) {
+                HttpResponse httpResponse = controller.handle(new HttpRequest(path));
+                write(httpResponse, socket);
+            }
+            else {
+                write(new HttpResponse("HTTP/1.1 404 NOT FOUND", "NOT FOUND!", "text/plain"), socket);
             }
 
-            socket.getOutputStream().write(("HTTP/1.1 " + statusCode + "\r\n" +
-                    "Content-Length: " + responseMessage.length() + "\r\n" +
-                    "Content-Type: " + contentType + ";charset=utf-8\r\n" +
-                    "\r\n" +
-                    responseMessage + "\n").getBytes());
 
-            socket.close();
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private String getContentType(String path) {
-        String contentType;
-        contentType = "text/plain";
-        if (path.endsWith(".html")){
-            contentType = "text/html";
-        }
-        return contentType;
+    private void write(HttpResponse response, Socket socket) throws IOException {
+        socket.getOutputStream().write((response.getResponseLine() + "\r\n" +
+                "Content-Length: " + response.getResponseBody().getBytes().length + "\r\n" +
+                "Content-Type: " + response.getContentType() + ";charset=utf-8\r\n" +
+                "\r\n" +
+                response.getResponseBody() + "\n").getBytes());
+        socket.close();
     }
 }
