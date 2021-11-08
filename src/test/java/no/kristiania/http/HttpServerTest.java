@@ -1,7 +1,6 @@
 package no.kristiania.http;
 
 import no.kristiania.http.controllers.FileController;
-import no.kristiania.http.controllers.IndexController;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -41,7 +40,7 @@ class HttpServerTest {
     @Test
     void shouldHandleMultipleRequest() throws IOException {
         String target = "/index.html";
-        server.addController(target, new IndexController(server));
+        server.addController(target, new FileController(server));
         HttpClient client = new HttpClient("localhost", server.getPort(), target);
         assertEquals(200, client.getResponseCode());
 

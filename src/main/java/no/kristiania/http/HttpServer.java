@@ -29,12 +29,6 @@ public class HttpServer implements Runnable {
         start();
     }
 
-    public static void main(String[] args) {
-        HttpServer server = new HttpServer(8000);
-        QuestionDao dao = new QuestionDao(new PGSimpleDataSource());
-        server.addController("/questions.html", new QuestionsController(dao, server));
-    }
-
     public boolean containsPath(String path) {
         return controllers.containsKey(path);
     }
@@ -87,7 +81,7 @@ public class HttpServer implements Runnable {
         controllers.put(path, controller);
     }
 
-    public Controller GetController(String path) {
+    public Controller getController(String path) {
         return controllers.get(path);
     }
 

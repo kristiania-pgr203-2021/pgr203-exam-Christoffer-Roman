@@ -4,7 +4,6 @@ import no.kristiania.http.controllers.Controller;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -36,7 +35,7 @@ public class HttpWorker implements Runnable {
             if (path.equals("/")) path = "/index.html";
 
             Controller controller;
-            if ((controller = server.GetController(path)) != null) {
+            if ((controller = server.getController(path)) != null) {
                 HttpResponse httpResponse = controller.handle(new HttpRequest(path));
                 write(httpResponse, socket);
             }

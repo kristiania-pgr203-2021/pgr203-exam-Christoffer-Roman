@@ -9,9 +9,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.SQLException;
 
-public class FileController extends Controller {
+public class FileController implements Controller {
+    private final HttpServer server;
+
     public FileController(HttpServer server) {
-        super(server);
+        this.server = server;
     }
 
     @Override

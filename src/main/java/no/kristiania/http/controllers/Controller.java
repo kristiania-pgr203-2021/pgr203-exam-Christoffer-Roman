@@ -8,13 +8,7 @@ import no.kristiania.http.HttpServer;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public abstract class Controller {
+public interface  Controller {
 
-    protected final HttpServer server;
-
-    public Controller(HttpServer server) {
-        this.server = server;
-    }
-
-    public abstract HttpResponse handle(HttpRequest request) throws SQLException, IOException;
+    HttpResponse handle(HttpRequest request) throws SQLException, IOException;
 }
