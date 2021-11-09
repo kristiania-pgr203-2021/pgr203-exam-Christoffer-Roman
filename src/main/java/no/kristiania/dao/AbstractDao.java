@@ -1,23 +1,29 @@
 package no.kristiania.dao;
 
-import no.kristiania.dao.model.AbstractModel;
+import no.kristiania.model.AbstractModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public abstract class AbstractDao {
+public abstract class AbstractDao<T extends AbstractModel> {
 
     protected final DataSource dataSource;
 
-    protected AbstractDao(DataSource dataSource) {
+    public AbstractDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public DataSource getDataSource(){
+    public DataSource getDataSource() {
         return dataSource;
     }
 
-    public void save(AbstractModel model, String statementString) throws SQLException {
+    public abstract String getSaveString();
+    public abstract String getRetrieveByIdString();
+    public abstract String getRetrieveAllString();
+
+    public void save(T model, String statementString) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     statementString,
@@ -25,14 +31,47 @@ public abstract class AbstractDao {
             )) {
                 setColumnsForSave(model, statement);
                 statement.executeUpdate();
-                try (ResultSet rs = statement.getGeneratedKeys()) {
-                    rs.next();
-                    model.setId(rs.getLong("id"));
+                try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                    resultSet.next();
+                    model.setId(resultSet.getLong("id"));
                 }
             }
         }
     }
 
-    protected abstract void setColumnsForSave(AbstractModel model, PreparedStatement statement) throws SQLException;
-}
+    public abstract void setColumnsForSave(T model, PreparedStatement statement) throws SQLException;
 
+    public T retrieveById(long id, String retrieveStatement) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    retrieveStatement, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setLong(1, id);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    resultSet.next();
+                    return mapFromResultSet(resultSet);
+                }
+            }
+        }
+    }
+
+    public List<T> retrieveAll(String retrieveAllStatement) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    retrieveAllStatement, Statement.RETURN_GENERATED_KEYS)) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    return mapAllFromResultSet(resultSet);
+                }
+            }
+        }
+    }
+
+    protected List<T> mapAllFromResultSet(ResultSet rs) throws SQLException {
+        ArrayList<T> resultList = new ArrayList<>();
+        while (rs.next()) {
+            resultList.add(mapFromResultSet(rs));
+        }
+        return resultList;
+    }
+
+    protected abstract T mapFromResultSet(ResultSet resultSet) throws SQLException;
+}

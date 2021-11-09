@@ -1,8 +1,6 @@
 package no.kristiania.model;
 
-import no.kristiania.dao.DbObject;
-
-public class Question extends DbObject {
+public class Question extends AbstractModel {
     private long id;
     private final String question;
 
@@ -18,6 +16,7 @@ public class Question extends DbObject {
     public void setId(long id) {
         this.id = id;
     }
+
     public String getQuestion() {
         return question;
     }

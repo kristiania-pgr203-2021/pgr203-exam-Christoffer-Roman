@@ -1,12 +1,10 @@
 package no.kristiania.http.controllers;
 
-import no.kristiania.dao.DbObject;
 import no.kristiania.dao.QuestionDao;
 import no.kristiania.http.HttpRequest;
 import no.kristiania.http.HttpResponse;
 import no.kristiania.model.Question;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -20,7 +18,7 @@ public class QuestionsController implements Controller {
     @Override
     public HttpResponse handle(HttpRequest request) throws SQLException {
 
-        List<DbObject> list = dao.retrieveAll(dao.getRetrieveAllStatement());
+        List<Question> list = dao.retrieveAll(dao.getRetrieveAllString());
         StringBuilder result = new StringBuilder();
         for (var obj : list) {
             Question question = (Question) obj;

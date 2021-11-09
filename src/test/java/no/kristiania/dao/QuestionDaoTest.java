@@ -17,9 +17,9 @@ public class QuestionDaoTest {
     void shouldAddAndReturnQuestion() throws SQLException {
         Question question = new Question("Kan du backflip?");
         QuestionDao dao = new QuestionDao(TestData.testDataSource());
-        dao.save(question, dao.getSaveStatementString());
+        dao.save(question, dao.getSaveString());
 
-        assertThat(dao.retrieveById(question.getId(), dao.getRetrieveStatement()))
+        assertThat(dao.retrieveById(question.getId(), dao.getRetrieveByIdString()))
                 .hasNoNullFieldsOrProperties()
                 .usingRecursiveComparison()
                 .isEqualTo(question);
