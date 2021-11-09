@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class AnswerDao extends AbstractDao<Answer> {
 
-    private final String saveString = "insert into answers (answerText) values (?)";
+    private final String saveString = "insert into answers (answer_text, question_id) values (?, ?)";
     private final String retrieveByIdString = "select * from answers where id = ?";
     private final String retrieveAllString = "select * from answers";
 
@@ -33,13 +33,14 @@ public class AnswerDao extends AbstractDao<Answer> {
     }
 
     @Override
-    public void setColumnsForSave(Answer model, PreparedStatement statement) throws SQLException {
-        statement.setString(1, model.getAnswerText());
+    public void setColumnsForSave(Answer answer, PreparedStatement statement) throws SQLException {
+        statement.setString(1, answer.getAnswerText());
+        statement.setString(2, Long.toString(answer.getQuestionId()));
     }
 
     @Override
     protected Answer mapFromResultSet(ResultSet rs) throws SQLException {
-        Answer a = new Answer(rs.getString("answerText"));
+        Answer a = new Answer(rs.getString("answer_text"), rs.getLong("question_id"));
         a.setId(rs.getLong("id"));
         return a;
     }

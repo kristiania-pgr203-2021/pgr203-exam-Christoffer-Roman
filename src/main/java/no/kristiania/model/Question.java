@@ -1,17 +1,13 @@
 package no.kristiania.model;
 
 public class Question extends AbstractModel {
-    private long id;
+
     private final String questionText;
+    private final long questionnaireId;
 
-    // TODO: possibly remove this constructor
-    public Question(long id, String value) {
-        this.id = id;
-        questionText = value;
-    }
-
-    public Question(String value) {
-        questionText = value;
+    public Question(String questionText, long questionnaireId) {
+        this.questionText = questionText;
+        this.questionnaireId = questionnaireId;
     }
 
     public void setId(long id) {
@@ -20,5 +16,9 @@ public class Question extends AbstractModel {
 
     public String getQuestionText() {
         return questionText;
+    }
+
+    public long getQuestionnaireId(){
+        return questionnaireId;
     }
 }

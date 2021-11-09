@@ -15,7 +15,7 @@ public class QuestionDaoTest {
 
     @Test
     void shouldAddAndReturnQuestion() throws SQLException {
-        Question question = new Question("Kan du backflip?");
+        Question question = new Question("Kan du backflip?", 1);
         QuestionDao dao = new QuestionDao(TestData.testDataSource());
         dao.save(question, dao.getSaveString());
 

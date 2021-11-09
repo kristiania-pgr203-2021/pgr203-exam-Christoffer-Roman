@@ -21,7 +21,7 @@ public class QuestionsController implements Controller {
         List<Question> list = dao.retrieveAll(dao.getRetrieveAllString());
         StringBuilder result = new StringBuilder();
         for (var obj : list) {
-            Question question = (Question) obj;
+            Question question = obj;
             result.append("<h3>").append(question.getQuestionText()).append("</h3>");
 
         }
