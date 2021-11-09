@@ -22,7 +22,7 @@ public class QuestionsController implements Controller {
         StringBuilder result = new StringBuilder();
         for (var obj : list) {
             Question question = (Question) obj;
-            result.append("<h3>").append(question.getQuestion()).append("</h3>");
+            result.append("<h3>").append(question.getQuestionText()).append("</h3>");
 
         }
         System.out.println(result);

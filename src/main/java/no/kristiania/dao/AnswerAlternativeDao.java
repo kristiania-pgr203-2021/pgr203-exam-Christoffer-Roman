@@ -9,6 +9,8 @@ import java.sql.SQLException;
 
 public class AnswerAlternativeDao extends AbstractDao<AnswerAlternative> {
 
+    // TODO: possibly remove class
+
     public final String saveString = "";
     public final String retrieveByIdString = "";
     public final String retrieveAllString = "";

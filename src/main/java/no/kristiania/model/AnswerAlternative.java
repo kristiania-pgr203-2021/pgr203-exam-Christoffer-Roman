@@ -1,4 +1,5 @@
 package no.kristiania.model;
 
-public class AnswerAlternative extends AbstractModel{
+public class AnswerAlternative extends AbstractModel {
+    // TODO: possibly remove class
 }
