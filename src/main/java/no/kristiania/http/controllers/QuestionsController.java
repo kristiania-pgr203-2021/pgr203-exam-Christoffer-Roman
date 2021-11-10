@@ -22,7 +22,7 @@ public class QuestionsController implements Controller {
     public HttpResponse handle(HttpRequest request) throws SQLException {
 
         if (request.getMethod() == HttpMethod.GET) {
-            return get(request);
+            return get();
         } else if (request.getMethod() == HttpMethod.POST) {
             return post(request);
         }
@@ -30,7 +30,7 @@ public class QuestionsController implements Controller {
         return new HttpResponse(ResponseCode.ERROR, "Internal Server Error", "text/plain");
     }
 
-    private HttpResponse get(HttpRequest request) throws SQLException {
+    private HttpResponse get() throws SQLException {
 
         List<Question> list = dao.retrieveAll(dao.getRetrieveAllString());
         StringBuilder result = new StringBuilder();
@@ -41,6 +41,10 @@ public class QuestionsController implements Controller {
                     .append("&questionTitle=").append(question.getQuestionTitle())
                     .append("&questionText=").append(question.getQuestionText())
                     .append("'>Answer question</a></p>");
+            result.append("<p><a href='/allAnswers.html?id=").append(question.getId())
+                    .append("&questionTitle=").append(question.getQuestionTitle())
+                    .append("&questionText=").append(question.getQuestionText())
+                    .append("'>See all answers</a></p>");
             result.append("<p><a href='/editQuestion.html?id=").append(question.getId())
                     .append("&questionTitle=").append(question.getQuestionTitle())
                     .append("&questionText=").append(question.getQuestionText())
@@ -55,7 +59,7 @@ public class QuestionsController implements Controller {
         // TODO: finish implementing method
 
         HttpResponse response = new HttpResponse(ResponseCode.SEE_OTHER, "Redirecting", "text/plain");
-        response.addHeader("Location", request.getPath());
+        response.addHeader("Location", request.getPath()); // TODO: fix path
         return response;
     }
 }
