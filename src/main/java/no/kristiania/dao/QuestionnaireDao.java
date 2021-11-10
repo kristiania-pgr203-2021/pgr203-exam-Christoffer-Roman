@@ -1,5 +1,6 @@
 package no.kristiania.dao;
 
+import no.kristiania.dao.model.AnswerAlternative;
 import no.kristiania.dao.model.Questionnarie;
 
 import javax.sql.DataSource;
@@ -42,6 +43,11 @@ public class QuestionnaireDao extends AbstractDao<Questionnarie> {
     @Override
     public void setColumnsForSave(Questionnarie model, PreparedStatement statement) throws SQLException {
         statement.setString(1, model.getName());
+    }
+
+    @Override
+    public void setColumnsForUpdate(Questionnarie questionnarie, PreparedStatement statement) throws SQLException {
+        // TODO: Implement method
     }
 
     @Override

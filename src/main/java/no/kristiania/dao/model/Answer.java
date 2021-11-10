@@ -2,7 +2,7 @@ package no.kristiania.dao.model;
 
 public class Answer extends AbstractModel{
 
-    private final String answerText;
+    private String answerText;
     private final long questionId;
 
     public Answer(String answerText, long questionId) {
@@ -12,6 +12,10 @@ public class Answer extends AbstractModel{
 
     public String getAnswerText(){
         return answerText;
+    }
+
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
     }
 
     public long getQuestionId() {

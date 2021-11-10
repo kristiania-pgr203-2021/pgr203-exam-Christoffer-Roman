@@ -1,6 +1,7 @@
 package no.kristiania.dao;
 
 import no.kristiania.dao.model.Answer;
+import no.kristiania.dao.model.AnswerAlternative;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -12,6 +13,7 @@ public class AnswerDao extends AbstractDao<Answer> {
     private final String saveString = "insert into answers (answer_text, question_id) values (?, ?)";
     private final String retrieveByIdString = "select * from answers where id = ?";
     private final String retrieveAllString = "select * from answers";
+    private final String updateString = "update answers set answer_text = ? where id = ?";
 
     public AnswerDao(DataSource dataSource) {
         super(dataSource);
@@ -34,13 +36,19 @@ public class AnswerDao extends AbstractDao<Answer> {
 
     @Override
     public String getUpdateString() {
-        return null;
+        return updateString;
     }
 
     @Override
     public void setColumnsForSave(Answer answer, PreparedStatement statement) throws SQLException {
         statement.setString(1, answer.getAnswerText());
         statement.setString(2, Long.toString(answer.getQuestionId()));
+    }
+
+    @Override
+    public void setColumnsForUpdate(Answer answer, PreparedStatement statement) throws SQLException {
+        statement.setString(1, answer.getAnswerText());
+        statement.setString(2, Long.toString(answer.getId()));
     }
 
     @Override

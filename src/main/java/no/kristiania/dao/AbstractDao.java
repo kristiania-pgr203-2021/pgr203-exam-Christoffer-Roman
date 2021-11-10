@@ -41,6 +41,7 @@ public abstract class AbstractDao<T extends AbstractModel> {
     }
 
     public abstract void setColumnsForSave(T model, PreparedStatement statement) throws SQLException;
+    public abstract void setColumnsForUpdate(T model, PreparedStatement statement) throws SQLException;
 
     public T retrieveById(long id, String retrieveStatement) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
@@ -51,6 +52,18 @@ public abstract class AbstractDao<T extends AbstractModel> {
                     resultSet.next();
                     return mapFromResultSet(resultSet);
                 }
+            }
+        }
+    }
+
+    public void update(T model, String updateString) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    updateString,
+                    Statement.RETURN_GENERATED_KEYS
+            )) {
+                setColumnsForUpdate(model, statement);
+                statement.executeUpdate();
             }
         }
     }

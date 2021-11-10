@@ -45,6 +45,11 @@ public class AnswerAlternativeDao extends AbstractDao<AnswerAlternative> {
     }
 
     @Override
+    public void setColumnsForUpdate(AnswerAlternative answerAlternative, PreparedStatement statement) throws SQLException {
+        // TODO: Implement method
+    }
+
+    @Override
     public AnswerAlternative mapFromResultSet(ResultSet resultSet) throws SQLException {
         // TODO: Implement method
         return null;
