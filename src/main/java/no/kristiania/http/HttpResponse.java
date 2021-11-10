@@ -1,18 +1,20 @@
 package no.kristiania.http;
 
+import java.util.HashMap;
+
 public class HttpResponse extends HttpMessage {
-    private final String responseLine;
+    private final ResponseCode responseCode;
     private final String responseBody;
     private final String contentType;
 
-    public HttpResponse(String responseLine, String responseBody, String contentType) {
-        this.responseLine = responseLine;
+    public HttpResponse(ResponseCode responseCode, String responseBody, String contentType) {
+        this.responseCode = responseCode;
         this.responseBody = responseBody;
         this.contentType = contentType;
     }
 
-    public String getResponseLine() {
-        return responseLine;
+    public String getResponseCode() {
+        return responseCode.toString();
     }
 
     public String getResponseBody() {

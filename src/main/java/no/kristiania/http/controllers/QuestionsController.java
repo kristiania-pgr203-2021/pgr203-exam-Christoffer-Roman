@@ -5,6 +5,7 @@ import no.kristiania.http.HttpMethod;
 import no.kristiania.http.HttpRequest;
 import no.kristiania.http.HttpResponse;
 import no.kristiania.dao.model.Question;
+import no.kristiania.http.ResponseCode;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -26,27 +27,26 @@ public class QuestionsController implements Controller {
             return post(request);
         }
 
-        return new HttpResponse("HTTP/1.1 500 Internal Server Error", "Internal Server Error", "text/plain");
+        return new HttpResponse(ResponseCode.ERROR, "Internal Server Error", "text/plain");
     }
 
     private HttpResponse get(HttpRequest request) throws SQLException {
 
         List<Question> list = dao.retrieveAll(dao.getRetrieveAllString());
         StringBuilder result = new StringBuilder();
-        for (var obj : list) {
-            Question question = obj;
+        for (var question : list) {
             result.append("<h3>").append(question.getQuestionTitle()).append("</h3>");
             result.append("<p>").append(question.getQuestionText()).append("</p>");
         }
-        System.out.println(result);
-        return new HttpResponse("HTTP/1.1 200 OK", result.toString(), "text/html");
+
+        return new HttpResponse(ResponseCode.OK, result.toString(), "text/html");
     }
 
     private HttpResponse post(HttpRequest request) {
 
         // TODO: finish implementing method
 
-        HttpResponse response = new HttpResponse("HTTP/1.1 303 See Other", "Redirecting", "text/plain");
+        HttpResponse response = new HttpResponse(ResponseCode.SEE_OTHER, "Redirecting", "text/plain");
         response.addHeader("Location", request.getPath());
         return response;
     }

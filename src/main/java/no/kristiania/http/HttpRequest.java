@@ -8,6 +8,7 @@ public class HttpRequest extends HttpMessage {
 
     private HttpMethod method;
 
+
     public HttpRequest(String method, String path) {
         this.method = HttpMethod.valueOf(method);
         this.path = path;

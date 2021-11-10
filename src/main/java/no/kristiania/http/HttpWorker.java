@@ -41,17 +41,21 @@ public class HttpWorker implements Runnable {
                 write(httpResponse, socket);
             }
             else {
-                write(new HttpResponse("HTTP/1.1 404 NOT FOUND", "NOT FOUND!", "text/plain"), socket);
+                write(new HttpResponse(ResponseCode.NOT_FOUND, "NOT FOUND!", "text/plain"), socket);
             }
 
 
         } catch (IOException | SQLException e) {
-            e.printStackTrace();
+            try {
+                write(new HttpResponse(ResponseCode.ERROR, "Internal Server Error", "text/plain"), socket);
+            } catch (IOException ex) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
     private void write(HttpResponse response, Socket socket) throws IOException {
-        socket.getOutputStream().write((response.getResponseLine() + "\r\n" +
+        socket.getOutputStream().write(("HTTP/1.1 " + response.getResponseCode() + "\r\n" +
                 "Content-Length: " + response.getResponseBody().getBytes().length + "\r\n" +
                 "Content-Type: " + response.getContentType() + ";charset=utf-8\r\n" +
                 "\r\n" +
