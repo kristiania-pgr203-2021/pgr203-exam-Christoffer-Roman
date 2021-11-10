@@ -22,4 +22,8 @@ public class HttpResponse extends HttpMessage {
     public String getContentType() {
         return contentType;
     }
+
+    public void addHeader(String key, String value) {
+        this.headers.put(key, value);
+    }
 }

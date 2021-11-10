@@ -21,9 +21,9 @@ public class QuestionsController implements Controller {
     public HttpResponse handle(HttpRequest request) throws SQLException {
 
         if (request.getMethod() == HttpMethod.GET) {
-            get(request);
+            return get(request);
         } else if (request.getMethod() == HttpMethod.POST) {
-            post(request);
+            return post(request);
         }
 
         return new HttpResponse("HTTP/1.1 500 Internal Server Error", "Internal Server Error", "text/plain");
@@ -43,7 +43,11 @@ public class QuestionsController implements Controller {
     }
 
     private HttpResponse post(HttpRequest request) {
-        // TODO: implement method
-        return null;
+
+        // TODO: finish implementing method
+
+        HttpResponse response = new HttpResponse("HTTP/1.1 303 See Other", "Redirecting", "text/plain");
+        response.addHeader("Location", request.getPath());
+        return response;
     }
 }
