@@ -2,7 +2,7 @@ package no.kristiania.dao;
 
 import no.kristiania.TestData;
 import no.kristiania.http.HttpServer;
-import no.kristiania.model.Question;
+import no.kristiania.dao.model.Question;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ public class QuestionDaoTest {
 
     @Test
     void shouldAddAndReturnQuestion() throws SQLException {
-        Question question = new Question("Kan du backflip?", 1);
+        Question question = new Question("Backflip", "Kan du backflip?");
         QuestionDao dao = new QuestionDao(TestData.testDataSource());
         dao.save(question, dao.getSaveString());
 

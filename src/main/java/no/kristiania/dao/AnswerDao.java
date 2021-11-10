@@ -1,6 +1,6 @@
 package no.kristiania.dao;
 
-import no.kristiania.model.Answer;
+import no.kristiania.dao.model.Answer;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -30,6 +30,11 @@ public class AnswerDao extends AbstractDao<Answer> {
     @Override
     public String getRetrieveAllString() {
         return retrieveAllString;
+    }
+
+    @Override
+    public String getUpdateString() {
+        return null;
     }
 
     @Override

@@ -1,6 +1,6 @@
-package no.kristiania.dao;
+package no.kristiania.dao.model;
 
-public abstract class DbObject {
+public abstract class AbstractModel {
 
     protected long id;
 

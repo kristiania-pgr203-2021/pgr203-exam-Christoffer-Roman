@@ -1,6 +1,6 @@
 package no.kristiania.dao;
 
-import no.kristiania.model.Questionnarie;
+import no.kristiania.dao.model.Questionnarie;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class QuestionnaireDao extends AbstractDao<Questionnarie> {
+
+    // TODO: possibly remove class
 
     private final String saveString = "insert into questionnaires (name) values (?)";
     private final String retrieveByIdString = "select * from questionnaires where id = ?";
@@ -30,6 +32,11 @@ public class QuestionnaireDao extends AbstractDao<Questionnarie> {
     @Override
     public String getRetrieveAllString() {
         return retrieveAllString;
+    }
+
+    @Override
+    public String getUpdateString() {
+        return null;
     }
 
     @Override

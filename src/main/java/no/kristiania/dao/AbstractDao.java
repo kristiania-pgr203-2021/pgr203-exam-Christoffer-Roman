@@ -1,6 +1,6 @@
 package no.kristiania.dao;
 
-import no.kristiania.model.AbstractModel;
+import no.kristiania.dao.model.AbstractModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -22,6 +22,7 @@ public abstract class AbstractDao<T extends AbstractModel> {
     public abstract String getSaveString();
     public abstract String getRetrieveByIdString();
     public abstract String getRetrieveAllString();
+    public abstract String getUpdateString();
 
     public void save(T model, String statementString) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {

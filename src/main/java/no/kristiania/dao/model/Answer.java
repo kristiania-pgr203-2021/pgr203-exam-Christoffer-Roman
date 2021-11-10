@@ -1,4 +1,4 @@
-package no.kristiania.model;
+package no.kristiania.dao.model;
 
 public class Answer extends AbstractModel{
 

@@ -1,6 +1,8 @@
-package no.kristiania.model;
+package no.kristiania.dao.model;
 
 public class Questionnarie extends AbstractModel {
+
+    // TODO: possibly remove class
 
     private final String name;
 

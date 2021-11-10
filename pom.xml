@@ -72,9 +72,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Main-Class>
-                                <!-- TODO: add correct class with main() method -->
-                            </Main-Class>
+                            <Main-Class>no.kristiania.Main</Main-Class>
                         </manifestEntries>
                     </archive>
                 </configuration>

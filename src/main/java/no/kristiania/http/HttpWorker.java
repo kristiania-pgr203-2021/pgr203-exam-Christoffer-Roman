@@ -23,6 +23,7 @@ public class HttpWorker implements Runnable {
         try {
             String[] requestLine = HttpMessage.readLine(socket).split(" ", 3);
             headers = HttpMessage.readInputHeaders(socket);
+            String method = requestLine[0];
             String path = requestLine[1], query;
 
             // Checking if path contains queries
@@ -36,7 +37,7 @@ public class HttpWorker implements Runnable {
 
             Controller controller;
             if ((controller = server.getController(path)) != null) {
-                HttpResponse httpResponse = controller.handle(new HttpRequest(path));
+                HttpResponse httpResponse = controller.handle(new HttpRequest(method, path));
                 write(httpResponse, socket);
             }
             else {
