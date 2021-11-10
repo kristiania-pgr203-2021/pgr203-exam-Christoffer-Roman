@@ -40,8 +40,7 @@ class HttpServerTest {
     @Test
     void shouldHandleMultipleRequest() throws IOException {
         String target = "/index.html";
-        server.addController(target, new FileController(server));
-        HttpClient client = new HttpClient("localhost", server.getPort(), target);
+        server.addController(target, new FileController(server));        HttpClient client = new HttpClient("localhost", server.getPort(), target);
         assertEquals(200, client.getResponseCode());
 
         client = new HttpClient("localhost", server.getPort(), "/notavailable");

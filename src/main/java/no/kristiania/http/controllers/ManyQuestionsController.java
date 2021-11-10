@@ -61,10 +61,11 @@ public class ManyQuestionsController implements Controller {
 
         HashMap<String, String> qp = request.parseQueryParameters();
 
-        if (qp.get("dbAction") == "save") {
+
+        if (qp.get("dbAction").equals("save")) {
             Question q = new Question(qp.get("questionTitle"), qp.get("questionText"));
             dao.save(q, dao.getSaveString());
-        } else if (qp.get("dbAction") == "update") {
+        } else if (qp.get("dbAction").equals("update")) {
             Question q = new Question(qp.get("questionTitle"), qp.get("questionText"));
             q.setId(Long.parseLong(qp.get("id")));
             dao.update(q, dao.getUpdateString());

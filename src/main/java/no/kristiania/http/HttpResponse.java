@@ -1,7 +1,5 @@
 package no.kristiania.http;
 
-import java.util.HashMap;
-
 public class HttpResponse extends HttpMessage {
     private final ResponseCode responseCode;
     private final String responseBody;
@@ -27,5 +25,9 @@ public class HttpResponse extends HttpMessage {
 
     public void addHeader(String key, String value) {
         this.headers.put(key, value);
+    }
+
+    public String getHeader(String header) {
+        return headers.get(header);
     }
 }

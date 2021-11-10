@@ -1,5 +1,7 @@
 package no.kristiania.dao.model;
 
+import java.util.Objects;
+
 public class Question extends AbstractModel {
 
     private String questionTitle;
@@ -24,5 +26,18 @@ public class Question extends AbstractModel {
 
     public void setQuestionText(String questionText) {
         this.questionText = questionText;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Question)) return false;
+        Question question = (Question) o;
+        return questionTitle.equals(question.questionTitle) && Objects.equals(questionText, question.questionText);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(questionTitle, questionText);
     }
 }

@@ -1,7 +1,5 @@
 package no.kristiania.http;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.util.HashMap;
 
 public class HttpRequest extends HttpMessage {
@@ -10,8 +8,8 @@ public class HttpRequest extends HttpMessage {
     private HttpMethod method;
     private String queryString;
 
-    public HttpRequest(String method, String path, String queryString) {
-        this.method = HttpMethod.valueOf(method);
+    public HttpRequest(HttpMethod method, String path, String queryString) {
+        this.method = method;
         this.path = path;
         this.queryString = queryString;
     }

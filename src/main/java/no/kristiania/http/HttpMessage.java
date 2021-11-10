@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class HttpMessage {
 
-    protected HashMap<String, String> headers;
+    protected HashMap<String, String> headers = new HashMap<>();
 
     public static String readLine(Socket socket) throws IOException{
         StringBuilder result = new StringBuilder();

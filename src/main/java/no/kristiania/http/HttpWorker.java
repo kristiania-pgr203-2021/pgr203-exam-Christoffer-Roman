@@ -23,7 +23,7 @@ public class HttpWorker implements Runnable {
         try {
             String[] requestLine = HttpMessage.readLine(socket).split(" ", 3);
             headers = HttpMessage.readInputHeaders(socket);
-            String method = requestLine[0];
+            HttpMethod method = HttpMethod.valueOf(requestLine[0].toUpperCase());
             String path = requestLine[1];
             String queryString = "";
 
@@ -38,8 +38,15 @@ public class HttpWorker implements Runnable {
 
             Controller controller;
             if ((controller = server.getController(path)) != null) {
-                HttpResponse httpResponse = controller.handle(new HttpRequest(method, path, queryString));
-                write(httpResponse, socket);
+                HttpResponse httpResponse;
+                if (method == HttpMethod.POST) {
+                    String query = HttpMessage.readBytes(socket, Integer.parseInt(headers.get("Content-Length")));
+                    httpResponse = controller.handle(new HttpRequest(method, path, query));
+                    redirect(httpResponse.getHeader("Location"));
+                } else {
+                    httpResponse = controller.handle(new HttpRequest(method, path, null));
+                    write(httpResponse, socket);
+                }
             }
             else {
                 write(new HttpResponse(ResponseCode.NOT_FOUND, "NOT FOUND!", "text/plain"), socket);
@@ -52,6 +59,20 @@ public class HttpWorker implements Runnable {
             } catch (IOException ex) {
                 System.out.println(e.getMessage());
             }
+        }
+    }
+
+    private void redirect(String location) throws IOException, SQLException {
+        Controller controller;
+        if ((controller = server.getController(location)) != null) {
+            HttpResponse response = controller.handle(
+                    new HttpRequest(HttpMethod.GET, location, null));
+            write(response, socket);
+
+        } else {
+            write(new HttpResponse(ResponseCode.NOT_FOUND,
+                    "Not Found!",
+                    HttpMessage.getContentType(location)), socket);
         }
     }
 
