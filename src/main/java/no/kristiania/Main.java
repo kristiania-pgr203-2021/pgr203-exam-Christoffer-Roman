@@ -22,7 +22,7 @@ public class Main {
         DataSource dataSource = createDataSource();
         QuestionDao dao = new QuestionDao(dataSource);
         server.addController("/index.html", new FileController(server));
-        server.addController("/questions.html", new FileController(server));
+        server.addController("/allQuestions.html", new FileController(server));
         server.addController("/api/questions", new QuestionsController(dao));
     }
 

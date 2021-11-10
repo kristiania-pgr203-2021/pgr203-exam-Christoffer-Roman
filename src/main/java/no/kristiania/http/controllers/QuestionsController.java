@@ -37,6 +37,14 @@ public class QuestionsController implements Controller {
         for (var question : list) {
             result.append("<h3>").append(question.getQuestionTitle()).append("</h3>");
             result.append("<p>").append(question.getQuestionText()).append("</p>");
+            result.append("<p><a href='/addAnswer.html?id=").append(question.getId())
+                    .append("&questionTitle=").append(question.getQuestionTitle())
+                    .append("&questionText=").append(question.getQuestionText())
+                    .append("'>Answer question</a></p>");
+            result.append("<p><a href='/editQuestion.html?id=").append(question.getId())
+                    .append("&questionTitle=").append(question.getQuestionTitle())
+                    .append("&questionText=").append(question.getQuestionText())
+                    .append("'>Edit question</a></p>");
         }
 
         return new HttpResponse(ResponseCode.OK, result.toString(), "text/html");
