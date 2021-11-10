@@ -2,6 +2,8 @@ package no.kristiania.http;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 public class HttpMessage {
@@ -16,7 +18,7 @@ public class HttpMessage {
         }
         int expectedNewLine = socket.getInputStream().read();
         assert expectedNewLine == '\n';
-        return result.toString();
+        return URLDecoder.decode(result.toString(), StandardCharsets.UTF_8);
     }
 
     public static String readBytes(Socket socket, int contentLength) throws IOException{
@@ -24,7 +26,7 @@ public class HttpMessage {
         for (int i = 0; i < contentLength; i++) {
             result.append((char)socket.getInputStream().read());
         }
-        return result.toString();
+        return URLDecoder.decode(result.toString(), StandardCharsets.UTF_8);
     }
 
     public static String getContentType(String path) {

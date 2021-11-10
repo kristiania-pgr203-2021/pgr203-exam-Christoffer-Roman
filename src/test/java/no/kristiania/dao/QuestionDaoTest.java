@@ -55,5 +55,29 @@ public class QuestionDaoTest {
                 .isEqualTo(question)
                 .hasNoNullFieldsOrProperties()
                 .usingRecursiveComparison();
+
+    }
+
+    @Test
+    void shouldAddAndCheckUTF8Encoding() throws IOException, SQLException {
+        String questionText = "Liker du blå gjæss ellær?";
+        String questionTitle = "Blå gjæss ellær";
+        Question question = new Question(questionTitle, questionText);
+        QuestionDao dao = new QuestionDao(TestData.testDataSource());
+        dao.save(question, dao.getSaveString());
+        server.addController("/api/questions",
+                new ManyQuestionsController(dao));
+        server.addController("/allQuestions.html",
+                new FileController(server));
+
+        HttpClient client = new HttpClient("localhost", server.getPort(),
+                "/api/questions", HttpMethod.POST,
+                "dbAction=save&questionTitle=" + questionTitle + "&questionText=" + questionText);
+
+
+        assertThat(dao.retrieveById(question.getId(), dao.getRetrieveByIdString()))
+                .isEqualTo(question)
+                .hasNoNullFieldsOrProperties()
+                .usingRecursiveComparison();
     }
 }

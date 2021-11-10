@@ -4,6 +4,7 @@ import no.kristiania.http.controllers.Controller;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -78,10 +79,12 @@ public class HttpWorker implements Runnable {
 
     private void write(HttpResponse response, Socket socket) throws IOException {
         socket.getOutputStream().write(("HTTP/1.1 " + response.getResponseCode() + "\r\n" +
-                "Content-Length: " + response.getResponseBody().getBytes().length + "\r\n" +
+                "Content-Length: " +
+                response.getResponseBody().getBytes(StandardCharsets.UTF_8).length + "\r\n" +
                 "Content-Type: " + response.getContentType() + ";charset=utf-8\r\n" +
                 "\r\n" +
-                response.getResponseBody() + "\n").getBytes());
+                response.getResponseBody()).getBytes(StandardCharsets.UTF_8));
+
         socket.close();
     }
 }
