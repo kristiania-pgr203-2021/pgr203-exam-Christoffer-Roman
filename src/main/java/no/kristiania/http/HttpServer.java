@@ -61,12 +61,6 @@ public class HttpServer implements Runnable {
 
     public void start() {
         new Thread(this).start();
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-
     }
 
     public void setRoot(Path rootPath) {
