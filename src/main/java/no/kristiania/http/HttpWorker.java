@@ -24,12 +24,13 @@ public class HttpWorker implements Runnable {
             String[] requestLine = HttpMessage.readLine(socket).split(" ", 3);
             headers = HttpMessage.readInputHeaders(socket);
             String method = requestLine[0];
-            String path = requestLine[1], query;
+            String path = requestLine[1];
+            String queryString = "";
 
             // Checking if path contains queries
             int questionPos = path.indexOf("?");
             if (questionPos != -1) {
-                query = path.substring(questionPos + 1);
+                queryString = path.substring(questionPos + 1);
                 path = path.substring(0, questionPos);
             }
             // If no path is specified, just send to /index.html
@@ -37,7 +38,7 @@ public class HttpWorker implements Runnable {
 
             Controller controller;
             if ((controller = server.getController(path)) != null) {
-                HttpResponse httpResponse = controller.handle(new HttpRequest(method, path));
+                HttpResponse httpResponse = controller.handle(new HttpRequest(method, path, queryString));
                 write(httpResponse, socket);
             }
             else {

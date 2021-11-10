@@ -2,9 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Kristiania Questionnaire</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+<h1>Answers</h1>
+<div id="answers"></div>
+<div>
+    <a href="allQuestions.html">Back to questions</a>
+    <a href="index.html">Back to front page</a>
+</div>
 </body>
+<script>
+    fetch("/api/answers")
+        .then(function(response) {
+            return response.text();
+        }).then(function(text) {
+        document.getElementById("answers").innerHTML = text;
+    });
+</script>
 </html>

@@ -1,10 +1,6 @@
 package no.kristiania.http;
 
-import no.kristiania.dao.QuestionDao;
 import no.kristiania.http.controllers.Controller;
-import no.kristiania.http.controllers.QuestionsController;
-import org.flywaydb.core.internal.jdbc.DriverDataSource;
-import org.postgresql.ds.PGSimpleDataSource;
 
 import java.io.IOException;
 import java.net.ServerSocket;

@@ -6,11 +6,7 @@ import java.util.HashMap;
 
 public class HttpMessage {
 
-    protected String path;
     protected HashMap<String, String> headers;
-
-    public HttpMessage() {
-    }
 
     public static String readLine(Socket socket) throws IOException{
         StringBuilder result = new StringBuilder();
@@ -55,9 +51,5 @@ public class HttpMessage {
             line = readLine(socket);
         }
         return headers;
-    }
-
-    public String getPath() {
-        return path;
     }
 }

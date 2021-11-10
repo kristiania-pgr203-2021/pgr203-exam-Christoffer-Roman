@@ -3,7 +3,7 @@ package no.kristiania;
 import no.kristiania.dao.QuestionDao;
 import no.kristiania.http.HttpServer;
 import no.kristiania.http.controllers.FileController;
-import no.kristiania.http.controllers.QuestionsController;
+import no.kristiania.http.controllers.ManyQuestionsController;
 import org.flywaydb.core.Flyway;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
@@ -23,7 +23,7 @@ public class Main {
         QuestionDao dao = new QuestionDao(dataSource);
         server.addController("/index.html", new FileController(server));
         server.addController("/allQuestions.html", new FileController(server));
-        server.addController("/api/questions", new QuestionsController(dao));
+        server.addController("/api/questions", new ManyQuestionsController(dao));
     }
 
     private static DataSource createDataSource() throws IOException {

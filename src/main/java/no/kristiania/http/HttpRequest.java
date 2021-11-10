@@ -6,15 +6,17 @@ import java.util.HashMap;
 
 public class HttpRequest extends HttpMessage {
 
+    private String path;
     private HttpMethod method;
+    private String queryString;
 
-
-    public HttpRequest(String method, String path) {
+    public HttpRequest(String method, String path, String queryString) {
         this.method = HttpMethod.valueOf(method);
         this.path = path;
+        this.queryString = queryString;
     }
 
-    public static HashMap<String, String> parseQueryParameters(String queryString) {
+    public HashMap<String, String> parseQueryParameters() {
         if (queryString == null) return null;
         HashMap<String, String> queryParams = new HashMap<>();
         while (queryString.contains("=")) {
@@ -39,5 +41,9 @@ public class HttpRequest extends HttpMessage {
 
     public HttpMethod getMethod() {
         return method;
+    }
+
+    public String getPath() {
+        return path;
     }
 }
