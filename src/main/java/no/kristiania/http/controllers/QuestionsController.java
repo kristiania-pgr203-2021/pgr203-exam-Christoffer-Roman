@@ -60,10 +60,10 @@ public class QuestionsController implements Controller {
             }
         } else {
 
-            result.append("<input type'hidden' name='id' value='").append(queryParameters.get("id"))
-                    .append("'><p><label>Title: <input type='text' name='questionTitle' value='")
+            result
+                    .append("<p><label>Title: <input type='text' name='questionTitle' placeholder='")
                     .append(queryParameters.get("questionTitle"))
-                    .append("'></label></p><p><label>Question: <input type='text' name='questionText' value='")
+                    .append("'></label></p><p><label>Question: <input type='text' name='questionText' placeholder='")
                     .append(queryParameters.get("questionText"))
                     .append("'></label></p>");
         }
