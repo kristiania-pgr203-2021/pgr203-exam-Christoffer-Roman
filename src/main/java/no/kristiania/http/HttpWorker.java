@@ -1,6 +1,7 @@
 package no.kristiania.http;
 
 import no.kristiania.http.controllers.Controller;
+import no.kristiania.http.controllers.QuestionsController;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -39,17 +40,16 @@ public class HttpWorker implements Runnable {
 
             Controller controller;
             if ((controller = server.getController(path)) != null) {
-                HttpResponse httpResponse;
                 if (method == HttpMethod.POST) {
-                    String query = HttpMessage.readBytes(socket, Integer.parseInt(headers.get("Content-Length")));
-                    httpResponse = controller.handle(new HttpRequest(method, path, query));
-                    redirect(httpResponse.getHeader("Location"));
-                } else {
-                    httpResponse = controller.handle(new HttpRequest(method, path, null));
-                    write(httpResponse, socket);
+                    queryString = HttpMessage.readBytes(socket, Integer.parseInt(headers.get("Content-Length")));
                 }
-            }
-            else {
+                if (controller instanceof QuestionsController) {
+                    ((QuestionsController) controller).setQueryParameters(queryString);
+                }
+
+                HttpResponse httpResponse = controller.handle(new HttpRequest(method, path));
+                write(httpResponse, socket);
+            } else {
                 write(new HttpResponse(ResponseCode.NOT_FOUND, "NOT FOUND!", "text/plain"), socket);
             }
 
@@ -67,7 +67,7 @@ public class HttpWorker implements Runnable {
         Controller controller;
         if ((controller = server.getController(location)) != null) {
             HttpResponse response = controller.handle(
-                    new HttpRequest(HttpMethod.GET, location, null));
+                    new HttpRequest(HttpMethod.GET, location));
             write(response, socket);
 
         } else {
@@ -82,6 +82,7 @@ public class HttpWorker implements Runnable {
                 "Content-Length: " +
                 response.getResponseBody().getBytes(StandardCharsets.UTF_8).length + "\r\n" +
                 "Content-Type: " + response.getContentType() + ";charset=utf-8\r\n" +
+                "Location: " + response.getHeader("Location") + "\r\n" +
                 "\r\n" +
                 response.getResponseBody()).getBytes(StandardCharsets.UTF_8));
 

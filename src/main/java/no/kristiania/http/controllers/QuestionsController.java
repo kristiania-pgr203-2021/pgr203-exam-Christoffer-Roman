@@ -14,6 +14,7 @@ import java.util.List;
 public class QuestionsController implements Controller {
 
     private QuestionDao dao;
+    private HashMap<String, String> queryParameters;
 
     public QuestionsController(QuestionDao dao) {
         this.dao = dao;
@@ -59,13 +60,11 @@ public class QuestionsController implements Controller {
             }
         } else {
 
-            HashMap qp = request.parseQueryParameters();
-
-            result.append("<input type'hidden' name='id' value='").append(qp.get("id"))
+            result.append("<input type'hidden' name='id' value='").append(queryParameters.get("id"))
                     .append("'><p><label>Title: <input type='text' name='questionTitle' value='")
-                    .append(qp.get("questionTitle"))
+                    .append(queryParameters.get("questionTitle"))
                     .append("'></label></p><p><label>Question: <input type='text' name='questionText' value='")
-                    .append(qp.get("questionText"))
+                    .append(queryParameters.get("questionText"))
                     .append("'></label></p>");
         }
 
@@ -74,9 +73,7 @@ public class QuestionsController implements Controller {
 
     private HttpResponse post(HttpRequest request) throws SQLException {
 
-        HashMap<String, String> qp = request.parseQueryParameters();
-
-        Question q = new Question(qp.get("question_title"), qp.get("question_text"));
+        Question q = new Question(queryParameters.get("question_title"), queryParameters.get("question_text"));
         dao.save(q, dao.getSaveString());
 
         HttpResponse response = new HttpResponse(ResponseCode.SEE_OTHER, "Redirecting", "text/plain");
@@ -86,14 +83,17 @@ public class QuestionsController implements Controller {
 
     private HttpResponse patch(HttpRequest request) throws SQLException {
 
-        HashMap<String, String> qp = request.parseQueryParameters();
-
-        Question q = new Question(qp.get("question_title"), qp.get("question_text"));
-        q.setId(Long.parseLong(qp.get("id")));
+        Question q = new Question(queryParameters.get("question_title"), queryParameters.get("question_text"));
+        q.setId(Long.parseLong(queryParameters.get("id")));
         dao.update(q, dao.getUpdateString());
 
         HttpResponse response = new HttpResponse(ResponseCode.SEE_OTHER, "Redirecting", "text/plain");
         response.addHeader("Location", "/allQuestions.html");
         return response;
+    }
+
+    public void setQueryParameters(String queryString) {
+        if (queryString.equals("") || queryString == null) return;
+        queryParameters = HttpRequest.parseQueryParameters(queryString);
     }
 }

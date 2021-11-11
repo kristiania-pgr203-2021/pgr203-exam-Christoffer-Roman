@@ -8,13 +8,12 @@ public class HttpRequest extends HttpMessage {
     private HttpMethod method;
     private String queryString;
 
-    public HttpRequest(HttpMethod method, String path, String queryString) {
+    public HttpRequest(HttpMethod method, String path) {
         this.method = method;
         this.path = path;
-        this.queryString = queryString;
     }
 
-    public HashMap<String, String> parseQueryParameters() {
+    public static HashMap<String, String> parseQueryParameters(String queryString) {
         if (queryString == null) return null;
         HashMap<String, String> queryParams = new HashMap<>();
         while (queryString.contains("=")) {
