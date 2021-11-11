@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kristiania Questionnaire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+    <h1>Answer Question</h1>
+    <h2 id="questionTitle"></h2>
+    <h3 id="questionText"></h3>
+    <form action="/api/answers" method="post">
+        <input type="hidden" name="questionId" value="" id="questionId">
+        <p><label>Answer: <input type="text" name="answerText"></label></p>
+        <button>Submit</button>
+    </form>
+</main>
+<script>
+
+    const urlSearchParams = new URLSearchParams(window.location.search);
+
+    const questionId = urlSearchParams.get("id");
+    const questionTitle = urlSearchParams.get("questionTitle");
+    const questionText = urlSearchParams.get("questionText");
+
+    document.getElementById("questionTitle").innerHTML = questionTitle;
+    document.getElementById("questionText").innerHTML = questionText;
+    document.getElementById("questionId").value = questionId;
+
+    /*
+    fetch(`api/questions?id=${questionId}`)
+        .then(function(response) {
+            return response.text();
+        }).then(function(text) {
+            document.getElementById("output").innerHTML = text;
+    });
+    */
+</script>
+
+</body>
+</html>

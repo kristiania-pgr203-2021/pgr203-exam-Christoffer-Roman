@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kristiania Questionnaire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+    <h1>Answers</h1>
+    <h2 id="questionTitle"></h2>
+    <h3 id="questionText"></h3>
+    <div id="answers"></div>
+    <div>
+        <a href="allQuestions.html">Back to questions</a>
+        <a href="index.html">Back to front page</a>
+    </div>
+</main>
+<script>
+
+    const urlSearchParams = new URLSearchParams(window.location.search);
+
+    const questionId = urlSearchParams.get("id");
+    const questionTitle = urlSearchParams.get("questionTitle");
+    const questionText = urlSearchParams.get("questionText");
+
+    document.getElementById("questionTitle").innerHTML = questionTitle;
+    document.getElementById("questionText").innerHTML = questionText;
+
+    fetch(`api/answers?id=${questionId}`)
+        .then(function(response) {
+            return response.text();
+        }).then(function(text) {
+        document.getElementById("answers").innerHTML = text;
+    });
+</script>
+</body>
+</html>
