@@ -73,7 +73,7 @@ public class QuestionsController implements Controller {
 
     private HttpResponse post(HttpRequest request) throws SQLException {
 
-        Question q = new Question(queryParameters.get("question_title"), queryParameters.get("question_text"));
+        Question q = new Question(queryParameters.get("questionTitle"), queryParameters.get("questionText"));
         dao.save(q, dao.getSaveString());
 
         HttpResponse response = new HttpResponse(ResponseCode.SEE_OTHER, "Redirecting", "text/plain");
@@ -83,7 +83,7 @@ public class QuestionsController implements Controller {
 
     private HttpResponse patch(HttpRequest request) throws SQLException {
 
-        Question q = new Question(queryParameters.get("question_title"), queryParameters.get("question_text"));
+        Question q = new Question(queryParameters.get("questionTitle"), queryParameters.get("questionText"));
         q.setId(Long.parseLong(queryParameters.get("id")));
         dao.update(q, dao.getUpdateString());
 
