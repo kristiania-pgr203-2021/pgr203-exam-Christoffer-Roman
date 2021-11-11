@@ -1,3 +1,4 @@
+[![Java CI with Maven](https://github.com/kristiania-pgr203-2021/pgr203-exam-Christoffer-Roman/actions/workflows/maven.yml/badge.svg)](https://github.com/kristiania-pgr203-2021/pgr203-exam-Christoffer-Roman/actions/workflows/maven.yml)
 # PGR203 Avansert Java eksamen
 
 
