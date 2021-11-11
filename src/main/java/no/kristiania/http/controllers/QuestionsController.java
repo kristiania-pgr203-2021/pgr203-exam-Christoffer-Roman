@@ -93,6 +93,7 @@ public class QuestionsController implements Controller {
     }
 
     public void setQueryParameters(String queryString) {
+        queryParameters = null; // Clearing if there was old queryParameters
         if (queryString.equals("") || queryString == null) return;
         queryParameters = HttpRequest.parseQueryParameters(queryString);
     }
