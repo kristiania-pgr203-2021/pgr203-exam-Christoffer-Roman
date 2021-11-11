@@ -11,24 +11,26 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
-public class ManyQuestionsController implements Controller {
+public class QuestionsController implements Controller {
 
     private QuestionDao dao;
 
-    public ManyQuestionsController(QuestionDao dao) {
+    public QuestionsController(QuestionDao dao) {
         this.dao = dao;
     }
 
     @Override
     public HttpResponse handle(HttpRequest request) throws SQLException {
 
-        if (request.getMethod() == HttpMethod.GET) {
+        if (request.getMethod().equals(HttpMethod.GET)) {
             return get();
-        } else if (request.getMethod() == HttpMethod.POST) {
+        } else if (request.getMethod().equals(HttpMethod.POST)) {
             return post(request);
+        } else if (request.getMethod().equals(HttpMethod.PATCH)) {
+            return patch(request);
         }
 
-        return new HttpResponse(ResponseCode.ERROR, "Internal Server Error", "text/plain");
+        return new HttpResponse(ResponseCode.METHOD_NOT_ALLOWED, "Method Not Allowed", "text/plain");
     }
 
     private HttpResponse get() throws SQLException {
@@ -61,15 +63,21 @@ public class ManyQuestionsController implements Controller {
 
         HashMap<String, String> qp = request.parseQueryParameters();
 
+        Question q = new Question(qp.get("questionTitle"), qp.get("questionText"));
+        dao.save(q, dao.getSaveString());
 
-        if (qp.get("dbAction").equals("save")) {
-            Question q = new Question(qp.get("questionTitle"), qp.get("questionText"));
-            dao.save(q, dao.getSaveString());
-        } else if (qp.get("dbAction").equals("update")) {
-            Question q = new Question(qp.get("questionTitle"), qp.get("questionText"));
-            q.setId(Long.parseLong(qp.get("id")));
-            dao.update(q, dao.getUpdateString());
-        }
+        HttpResponse response = new HttpResponse(ResponseCode.SEE_OTHER, "Redirecting", "text/plain");
+        response.addHeader("Location", "/allQuestions.html");
+        return response;
+    }
+
+    private HttpResponse patch(HttpRequest request) throws SQLException {
+
+        HashMap<String, String> qp = request.parseQueryParameters();
+
+        Question q = new Question(qp.get("questionTitle"), qp.get("questionText"));
+        q.setId(Long.parseLong(qp.get("id")));
+        dao.update(q, dao.getUpdateString());
 
         HttpResponse response = new HttpResponse(ResponseCode.SEE_OTHER, "Redirecting", "text/plain");
         response.addHeader("Location", "/allQuestions.html");

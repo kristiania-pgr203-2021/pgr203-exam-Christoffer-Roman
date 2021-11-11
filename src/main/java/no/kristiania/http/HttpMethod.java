@@ -2,5 +2,8 @@ package no.kristiania.http;
 
 public enum HttpMethod {
     GET,
-    POST
+    POST,
+    PATCH,
+    PUT,
+    DELETE
 }

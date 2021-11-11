@@ -6,8 +6,7 @@ import no.kristiania.http.HttpMethod;
 import no.kristiania.http.HttpServer;
 import no.kristiania.dao.model.Question;
 import no.kristiania.http.controllers.FileController;
-import no.kristiania.http.controllers.ManyQuestionsController;
-import org.flywaydb.core.Flyway;
+import no.kristiania.http.controllers.QuestionsController;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -40,7 +39,7 @@ public class QuestionDaoTest {
         QuestionDao dao = new QuestionDao(TestData.testDataSource());
 
         server.addController("/api/questions",
-                new ManyQuestionsController(dao));
+                new QuestionsController(dao));
         server.addController("/allQuestions.html",
                 new FileController(server));
 
@@ -66,7 +65,7 @@ public class QuestionDaoTest {
         QuestionDao dao = new QuestionDao(TestData.testDataSource());
         dao.save(question, dao.getSaveString());
         server.addController("/api/questions",
-                new ManyQuestionsController(dao));
+                new QuestionsController(dao));
         server.addController("/allQuestions.html",
                 new FileController(server));
 

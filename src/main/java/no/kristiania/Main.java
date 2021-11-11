@@ -3,7 +3,7 @@ package no.kristiania;
 import no.kristiania.dao.QuestionDao;
 import no.kristiania.http.HttpServer;
 import no.kristiania.http.controllers.FileController;
-import no.kristiania.http.controllers.ManyQuestionsController;
+import no.kristiania.http.controllers.QuestionsController;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class Main {
         server.addController("/addQuestion.html", fileController);
         server.addController("/allQuestions.html", fileController);
         server.addController("/style.css", fileController);
-        server.addController("/api/questions", new ManyQuestionsController(dao));
+        server.addController("/api/questions", new QuestionsController(dao));
         logger.info("Server running on: http://localhost:{}", server.getPort());
     }
 
