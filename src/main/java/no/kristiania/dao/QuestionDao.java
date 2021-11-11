@@ -48,7 +48,7 @@ public class QuestionDao extends AbstractDao<Question> {
     public void setColumnsForUpdate(Question question, PreparedStatement statement) throws SQLException {
         statement.setString(1, question.getQuestionTitle());
         statement.setString(2, question.getQuestionText());
-        statement.setString(3, Long.toString(question.getId()));
+        statement.setLong(3, question.getId());
     }
 
     @Override

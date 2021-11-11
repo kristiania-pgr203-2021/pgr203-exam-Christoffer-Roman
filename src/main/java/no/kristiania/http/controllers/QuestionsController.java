@@ -26,9 +26,8 @@ public class QuestionsController implements Controller {
         if (request.getMethod().equals(HttpMethod.GET)) {
             return get(request);
         } else if (request.getMethod().equals(HttpMethod.POST)) {
+            if (queryParameters.get("dbAction").equals("update")) return patch(request);
             return post(request);
-        } else if (request.getMethod().equals(HttpMethod.PATCH)) {
-            return patch(request);
         }
 
         return new HttpResponse(ResponseCode.METHOD_NOT_ALLOWED, "Method Not Allowed", "text/plain");
@@ -60,8 +59,9 @@ public class QuestionsController implements Controller {
             }
         } else {
 
-            result
-                    .append("<p><label>Title: <input type='text' name='questionTitle' placeholder='")
+            result.append("<input id='id' type='hidden' name='id' value='")
+                    .append(queryParameters.get("id"))
+                    .append("'><p><label>Title: <input type='text' name='questionTitle' placeholder='")
                     .append(queryParameters.get("questionTitle"))
                     .append("'></label></p><p><label>Question: <input type='text' name='questionText' placeholder='")
                     .append(queryParameters.get("questionText"))
