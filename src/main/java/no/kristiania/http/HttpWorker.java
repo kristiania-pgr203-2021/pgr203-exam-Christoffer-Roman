@@ -1,5 +1,6 @@
 package no.kristiania.http;
 
+import no.kristiania.http.controllers.AnswersController;
 import no.kristiania.http.controllers.Controller;
 import no.kristiania.http.controllers.QuestionsController;
 
@@ -45,6 +46,9 @@ public class HttpWorker implements Runnable {
                 }
                 if (controller instanceof QuestionsController) {
                     ((QuestionsController) controller).setQueryParameters(queryString);
+                }
+                if (controller instanceof AnswersController) {
+                    ((AnswersController) controller).setQueryParameters(queryString);
                 }
 
                 HttpResponse httpResponse = controller.handle(new HttpRequest(method, path));

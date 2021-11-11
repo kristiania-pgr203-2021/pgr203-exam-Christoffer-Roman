@@ -57,4 +57,10 @@ public class AnswersController implements Controller {
         response.addHeader("Location", "/allQuestions.html");
         return response;
     }
+
+    public void setQueryParameters(String queryString) {
+        queryParameters = null; // Clearing if there was old queryParameters
+        if (queryString.equals("") || queryString == null) return;
+        queryParameters = HttpRequest.parseQueryParameters(queryString);
+    }
 }
