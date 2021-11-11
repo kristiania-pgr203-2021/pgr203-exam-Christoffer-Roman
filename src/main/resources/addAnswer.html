@@ -8,13 +8,32 @@
 <body>
 <main>
     <h1>Answer Question</h1>
-    <form action="/api/questions" method="post">
-        <p><label>Title: <input type="text" name="questionTitle"></label></p>
-        <p><label>Question: <input type="text" name="questionText"></label></p>
+    <h2 id="questionTitle"></h2>
+    <h3 id="questionText"></h3>
+    <form action="/api/answers" method="post">
+        <div id="output"></div>
+        <p><label>Answer: <input type="text" name="answerText"></label></p>
         <button>Submit</button>
     </form>
 </main>
+<script>
 
+    const urlSearchParams = new URLSearchParams(window.location.search);
+
+    const questionId = urlSearchParams.get("questionId");
+    const questionTitle = urlSearchParams.get("questionTitle");
+    const questionText = urlSearchParams.get("questionText");
+
+    document.getElementById("questionTitle").innerHTML = questionTitle;
+    document.getElementById("questionText").innerHTML = questionText;
+
+    fetch(`api/questions?id=${questionId}`)
+        .then(function(response) {
+            return response.text();
+        }).then(function(text) {
+            document.getElementById("output").innerHTML = text;
+        });
+</script>
 
 </body>
 </html>

@@ -58,14 +58,20 @@ public class QuestionsController implements Controller {
                         .append("'>Edit question</a></p>");
             }
         } else {
-
-            result.append("<input id='id' type='hidden' name='id' value='")
-                    .append(queryParameters.get("id"))
-                    .append("'><p><label>Title: <input type='text' name='questionTitle' placeholder='")
-                    .append(queryParameters.get("questionTitle"))
-                    .append("'></label></p><p><label>Question: <input type='text' name='questionText' placeholder='")
-                    .append(queryParameters.get("questionText"))
-                    .append("'></label></p>");
+            if (queryParameters.size() > 1) {
+                result.append("<input id='id' type='hidden' name='id' value='")
+                        .append(queryParameters.get("id"))
+                        .append("'><p><label>Title: <input type='text' name='questionTitle' placeholder='")
+                        .append(queryParameters.get("questionTitle"))
+                        .append("'></label></p><p><label>Question: <input type='text' name='questionText' placeholder='")
+                        .append(queryParameters.get("questionText"))
+                        .append("'></label></p>");
+            } else {
+                result
+                        .append("<input type='hidden' name='questionId' value='")
+                        .append(queryParameters.get("questionId"))
+                        .append("'>");
+            }
         }
 
         return new HttpResponse(ResponseCode.OK, result.toString(), "text/html");
