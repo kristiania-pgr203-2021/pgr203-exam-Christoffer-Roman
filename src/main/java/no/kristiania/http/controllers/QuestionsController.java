@@ -73,9 +73,7 @@ public class QuestionsController implements Controller {
 
     private HttpResponse post(HttpRequest request) throws SQLException {
 
-        HashMap<String, String> qp = HttpRequest.parseQueryParameters(request.getQueryString());
-
-        Question q = new Question(qp.get("questionTitle"), qp.get("questionText"));
+        Question q = new Question(queryParameters.get("questionTitle"), queryParameters.get("questionText"));
         dao.save(q, dao.getSaveString());
 
         HttpResponse response = new HttpResponse(ResponseCode.SEE_OTHER, "Redirecting", "text/plain");
