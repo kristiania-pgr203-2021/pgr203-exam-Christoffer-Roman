@@ -9,6 +9,7 @@
     <main>
         <h1>Add new question</h1>
         <form action="/api/questions" method="post">
+            <input type="hidden" name="dbAction" value="save">
             <p><label>Title: <input type="text" name="questionTitle"></label></p>
             <p><label>Question: <input type="text" name="questionText"></label></p>
             <button>Submit</button>
