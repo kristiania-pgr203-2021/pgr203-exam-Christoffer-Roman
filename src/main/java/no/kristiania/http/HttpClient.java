@@ -7,17 +7,20 @@ import java.util.HashMap;
 public class HttpClient {
 
     private final Socket socket;
-    private int statusCode;
+    private final String host;
+    private int responseCode;
     private final HashMap<String, String> headerFields = new HashMap<>();
     private String messageBody;
     private String requestBody = "";
 
     public HttpClient(String host, int port, String target) throws IOException {
+        this.host = host;
         this.socket = new Socket(host, port);
         executeGetRequest(host, target);
     }
     public HttpClient(String host, int port, String target, HttpMethod method, String requestBody) throws IOException {
         this.socket = new Socket(host, port);
+        this.host = host;
         this.requestBody = requestBody;
         if (method.equals(HttpMethod.POST)) {
             executePostRequest(host, target);
@@ -55,7 +58,7 @@ public class HttpClient {
 
     private void readResponse() throws IOException {
         String statusLine = HttpMessage.readLine(socket);
-        this.statusCode = Integer.parseInt(statusLine.split(" ")[1]);
+        this.responseCode = Integer.parseInt(statusLine.split(" ")[1]);
 
         String headerLine;
         while(!(headerLine = HttpMessage.readLine(socket)).isBlank()){
@@ -65,10 +68,14 @@ public class HttpClient {
             headerFields.put(headerName, headerValue);
         }
         this.messageBody = HttpMessage.readBytes(socket, getContentLength());
+
+        if (responseCode == 303) {
+            executeGetRequest(host, headerFields.get("Location"));
+        }
     }
 
     public int getResponseCode() {
-        return statusCode;
+        return responseCode;
     }
 
     public String getHeader(String fieldName){

@@ -1,5 +1,9 @@
 package no.kristiania.http;
 
+import no.kristiania.TestData;
+import no.kristiania.dao.QuestionDao;
+import no.kristiania.http.controllers.FileController;
+import no.kristiania.http.controllers.QuestionsController;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -8,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HttpClientTest {
+    private HttpServer server = new HttpServer();
 
     @Test
     void shouldRespond200OK() throws IOException {
@@ -34,5 +39,18 @@ public class HttpClientTest {
         var expected = "<h1>Herman Melville - Moby-Dick</h1>\n";
 
         assertTrue(client.getMessageBody().contains(expected));
+    }
+
+    @Test
+    void shouldGetRedirected() throws IOException {
+        QuestionDao dao = new QuestionDao(TestData.testDataSource());
+        server.addController("/api/questions", new QuestionsController(dao));
+        server.addController("/allQuestions.html", new FileController(server));
+
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/questions", HttpMethod.POST,
+                "dbAction=save&questionTitle=Cola&questionText=Liker du cola?");
+
+        assertEquals(303, client.getResponseCode());
     }
 }
