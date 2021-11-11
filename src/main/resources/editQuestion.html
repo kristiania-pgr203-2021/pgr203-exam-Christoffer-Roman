@@ -19,7 +19,14 @@
 
 </body>
 <script>
-    fetch("/api/questions")
+
+    const urlSearchParams = new URLSearchParams(window.location.search);
+
+    const questionId = urlSearchParams.get("id");
+    const questionTitle = urlSearchParams.get("questionTitle");
+    const questionText = urlSearchParams.get("questionText");
+
+    fetch(`api/questions?id=${questionId}&questionTitle=${questionTitle}&questionText=${questionText}`)
         .then(function(response) {
             return response.text();
         }).then(function(text) {
