@@ -6,8 +6,9 @@ import java.util.HashMap;
 
 public class HttpClient {
 
-    private final Socket socket;
+    private Socket socket;
     private final String host;
+    private final int port;
     private int responseCode;
     private final HashMap<String, String> headerFields = new HashMap<>();
     private String messageBody;
@@ -15,12 +16,14 @@ public class HttpClient {
 
     public HttpClient(String host, int port, String target) throws IOException {
         this.host = host;
+        this.port = port;
         this.socket = new Socket(host, port);
         executeGetRequest(host, target);
     }
     public HttpClient(String host, int port, String target, HttpMethod method, String requestBody) throws IOException {
         this.socket = new Socket(host, port);
         this.host = host;
+        this.port = port;
         this.requestBody = requestBody;
         if (method.equals(HttpMethod.POST)) {
             executePostRequest(host, target);
@@ -34,11 +37,12 @@ public class HttpClient {
                 "POST " + target + " HTTP/1.1\r\n" +
                         "Host: " + host + "\r\n" +
                         "Content-Length: " + requestBody.getBytes().length + "\r\n" +
-                        "Connection: close\r\n" +
+                        "Connection: keep-alive\r\n" +
                         "\r\n" +
                         requestBody;
 
         socket.getOutputStream().write(request.getBytes());
+
 
         readResponse();
     }
@@ -48,7 +52,7 @@ public class HttpClient {
         String request =
                 "GET " + target + " HTTP/1.1\r\n" +
                         "Host: " + host + "\r\n" +
-                        "Connection: close\r\n" +
+                        "Connection: keep-alive\r\n" +
                         "\r\n";
 
         socket.getOutputStream().write(request.getBytes());
@@ -70,7 +74,10 @@ public class HttpClient {
         this.messageBody = HttpMessage.readBytes(socket, getContentLength());
 
         if (responseCode == 303) {
+            socket = new Socket(host, port);
             executeGetRequest(host, headerFields.get("Location"));
+
+            // new HttpClient(host, port, headerFields.get("Location"));
         }
     }
 

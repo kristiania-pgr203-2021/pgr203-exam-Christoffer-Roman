@@ -35,7 +35,7 @@ public class QuestionDaoTest {
     }
 
     @Test
-    void shouldAddAndReturnQuestionViaPost() throws IOException, SQLException {
+    void shouldAddAndReturnQuestionViaPost() throws IOException, SQLException, InterruptedException {
         Question question = new Question("Cola", "Liker du cola?");
         QuestionDao dao = new QuestionDao(TestData.testDataSource());
         //assertEquals(1, question.getId());
@@ -69,7 +69,7 @@ public class QuestionDaoTest {
     }
 
     @Test
-    void shouldAddAndCheckUTF8Encoding() throws IOException, SQLException {
+    void shouldAddAndCheckUTF8Encoding() throws IOException, SQLException, InterruptedException {
         String questionText = "Liker du blå gjæss ellær?";
         String questionTitle = "Blå gjæss ellær";
         Question question = new Question(questionTitle, questionText);

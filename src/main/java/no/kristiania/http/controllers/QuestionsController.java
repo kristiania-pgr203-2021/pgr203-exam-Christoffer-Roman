@@ -38,7 +38,7 @@ public class QuestionsController implements Controller {
 
         StringBuilder result = new StringBuilder();
 
-        if (request.getQueryString() == null) {
+        if (queryParameters == null) {
 
             List<Question> list = dao.retrieveAll(dao.getRetrieveAllString());
 

@@ -50,30 +50,16 @@ public class HttpWorker implements Runnable {
                 HttpResponse httpResponse = controller.handle(new HttpRequest(method, path));
                 write(httpResponse, socket);
             } else {
-                write(new HttpResponse(ResponseCode.NOT_FOUND, "NOT FOUND!", "text/plain"), socket);
+                write(new HttpResponse(ResponseCode.NOT_FOUND, ResponseCode.NOT_FOUND.toString(), "text/plain"), socket);
             }
 
 
         } catch (IOException | SQLException e) {
             try {
-                write(new HttpResponse(ResponseCode.ERROR, "Internal Server Error", "text/plain"), socket);
+                write(new HttpResponse(ResponseCode.ERROR, ResponseCode.ERROR.toString(), "text/plain"), socket);
             } catch (IOException ex) {
                 System.out.println(e.getMessage());
             }
-        }
-    }
-
-    private void redirect(String location) throws IOException, SQLException {
-        Controller controller;
-        if ((controller = server.getController(location)) != null) {
-            HttpResponse response = controller.handle(
-                    new HttpRequest(HttpMethod.GET, location));
-            write(response, socket);
-
-        } else {
-            write(new HttpResponse(ResponseCode.NOT_FOUND,
-                    "Not Found!",
-                    HttpMessage.getContentType(location)), socket);
         }
     }
 
@@ -83,6 +69,7 @@ public class HttpWorker implements Runnable {
                 response.getResponseBody().getBytes(StandardCharsets.UTF_8).length + "\r\n" +
                 "Content-Type: " + response.getContentType() + ";charset=utf-8\r\n" +
                 "Location: " + response.getHeader("Location") + "\r\n" +
+                "Connection: keep-alive\r\n" +
                 "\r\n" +
                 response.getResponseBody()).getBytes(StandardCharsets.UTF_8));
 
