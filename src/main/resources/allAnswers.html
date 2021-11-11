@@ -18,9 +18,10 @@
 </main>
 <script>
 
-    const urlSearchParams = new URLSearchParams(window-location.search);
+    const urlSearchParams = new URLSearchParams(window.location.search);
 
-    const questionId = urlSearchParams.get("questionId");
+    const questionId = urlSearchParams.get("id");
+    console.log(questionId);
     const questionTitle = urlSearchParams.get("questionTitle");
     const questionText = urlSearchParams.get("questionText");
 

@@ -43,7 +43,7 @@ public class AnswerDao extends AbstractDao<Answer> {
     @Override
     public void setColumnsForSave(Answer answer, PreparedStatement statement) throws SQLException {
         statement.setString(1, answer.getAnswerText());
-        statement.setString(2, Long.toString(answer.getQuestionId()));
+        statement.setLong(2, answer.getQuestionId());
     }
 
     @Override
