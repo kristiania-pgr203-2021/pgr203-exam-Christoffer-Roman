@@ -40,4 +40,13 @@ public class Question extends AbstractModel {
     public int hashCode() {
         return Objects.hash(questionTitle, questionText);
     }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", questionTitle='" + questionTitle + '\'' +
+                ", questionText='" + questionText + '\'' +
+                '}';
+    }
 }

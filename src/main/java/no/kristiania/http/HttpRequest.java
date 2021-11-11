@@ -6,6 +6,11 @@ public class HttpRequest extends HttpMessage {
 
     private String path;
     private HttpMethod method;
+
+    public void setQueryString(String queryString) {
+        this.queryString = queryString;
+    }
+
     private String queryString;
 
     public HttpRequest(HttpMethod method, String path) {

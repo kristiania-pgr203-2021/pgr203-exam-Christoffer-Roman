@@ -3,6 +3,7 @@ package no.kristiania.dao;
 import no.kristiania.TestData;
 import no.kristiania.http.HttpClient;
 import no.kristiania.http.HttpMethod;
+import no.kristiania.http.HttpRequest;
 import no.kristiania.http.HttpServer;
 import no.kristiania.dao.model.Question;
 import no.kristiania.http.controllers.FileController;
@@ -37,20 +38,30 @@ public class QuestionDaoTest {
     void shouldAddAndReturnQuestionViaPost() throws IOException, SQLException {
         Question question = new Question("Cola", "Liker du cola?");
         QuestionDao dao = new QuestionDao(TestData.testDataSource());
+        //assertEquals(1, question.getId());
 
         server.addController("/api/questions",
                 new QuestionsController(dao));
         server.addController("/allQuestions.html",
                 new FileController(server));
 
+        /*
         HttpClient client = new HttpClient("localhost", server.getPort(),
-                "/api/questions", HttpMethod.POST,
-                "dbAction=save&questionTitle=Cola&questionText=Liker du cola?");
+                "/api/questions", HttpMethod.GET,
+                "id=1&questionTitle=Cola&questionText=Liker du cola?");
+        */
 
-        List<Question> questions = dao.retrieveAll(dao.getRetrieveAllString());
-        assertEquals(1, questions.size());
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "/api/questions");
+        request.setQueryString("questionTitle=Cola&questionText=Liker du cola?");
 
-        assertThat(questions.get(0))
+        server.getController("/api/questions").handle(request);
+
+        long id = question.getId();
+
+        Question retrievedQuestion = dao.retrieveById(1, dao.getRetrieveByIdString());
+        //assertEquals(1, questions.size());
+
+        assertThat(retrievedQuestion)
                 .isEqualTo(question)
                 .hasNoNullFieldsOrProperties()
                 .usingRecursiveComparison();
