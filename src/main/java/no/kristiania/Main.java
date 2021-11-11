@@ -1,7 +1,9 @@
 package no.kristiania;
 
+import no.kristiania.dao.AnswerDao;
 import no.kristiania.dao.QuestionDao;
 import no.kristiania.http.HttpServer;
+import no.kristiania.http.controllers.AnswersController;
 import no.kristiania.http.controllers.FileController;
 import no.kristiania.http.controllers.QuestionsController;
 import org.flywaydb.core.Flyway;
@@ -20,7 +22,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
         HttpServer server = new HttpServer(8008);
         DataSource dataSource = createDataSource();
-        QuestionDao dao = new QuestionDao(dataSource);
+        QuestionDao questionDao = new QuestionDao(dataSource);
+        AnswerDao answerDao = new AnswerDao(dataSource);
         FileController fileController = new FileController(server);
         server.addController("/index.html", fileController);
         server.addController("/allAnswers.html", fileController);
@@ -29,7 +32,8 @@ public class Main {
         server.addController("/addQuestion.html", fileController);
         server.addController("/allQuestions.html", fileController);
         server.addController("/style.css", fileController);
-        server.addController("/api/questions", new QuestionsController(dao));
+        server.addController("/api/questions", new QuestionsController(questionDao));
+        server.addController("/api/answers", new AnswersController(answerDao));
         logger.info("Server running on: http://localhost:{}", server.getPort());
     }
 
