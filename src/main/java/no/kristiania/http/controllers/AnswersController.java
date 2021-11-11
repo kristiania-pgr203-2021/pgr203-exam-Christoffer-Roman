@@ -33,14 +33,13 @@ public class AnswersController implements Controller {
 
     private HttpResponse get(HttpRequest request) throws SQLException {
 
-        List<Answer> list = dao.retrieveByQuestionId(Long.parseLong(queryParameters.get("questionId")), dao.getRetrieveAllString());
+        List<Answer> list = dao.retrieveByQuestionId(Long.parseLong(queryParameters.get("id")), dao.getRetrieveByIdString());
 
         StringBuilder result = new StringBuilder();
         result.append("<ul>");
 
         for (var a : list) {
-            result
-                    .append("<li>").append(a.getAnswerText()).append("</li>");
+            result.append("<li>").append(a.getAnswerText()).append("</li>");
         }
 
         result.append("</ul>");
