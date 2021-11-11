@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class AnswerDao extends AbstractDao<Answer> {
 
     private final String saveString = "insert into answers (answer_text, question_id) values (?, ?)";
-    private final String retrieveByIdString = "select * from answers where id = ?";
+    private final String retrieveByIdString = "select * from answers where questionId = ?";
     private final String retrieveAllString = "select * from answers";
     private final String updateString = "update answers set answer_text = ? where id = ?";
 
@@ -31,11 +31,13 @@ public class AnswerDao extends AbstractDao<Answer> {
 
     @Override
     public String getRetrieveAllString() {
+        // NEVER USED
         return retrieveAllString;
     }
 
     @Override
     public String getUpdateString() {
+        // NEVER USED
         return updateString;
     }
 
@@ -47,6 +49,7 @@ public class AnswerDao extends AbstractDao<Answer> {
 
     @Override
     public void setColumnsForUpdate(Answer answer, PreparedStatement statement) throws SQLException {
+        // NEVER USED
         statement.setString(1, answer.getAnswerText());
         statement.setString(2, Long.toString(answer.getId()));
     }
