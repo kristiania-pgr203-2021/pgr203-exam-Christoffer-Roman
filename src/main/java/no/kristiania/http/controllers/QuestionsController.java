@@ -23,7 +23,7 @@ public class QuestionsController implements Controller {
     public HttpResponse handle(HttpRequest request) throws SQLException {
 
         if (request.getMethod().equals(HttpMethod.GET)) {
-            return get();
+            return get(request);
         } else if (request.getMethod().equals(HttpMethod.POST)) {
             return post(request);
         } else if (request.getMethod().equals(HttpMethod.PATCH)) {
@@ -33,27 +33,40 @@ public class QuestionsController implements Controller {
         return new HttpResponse(ResponseCode.METHOD_NOT_ALLOWED, "Method Not Allowed", "text/plain");
     }
 
-    private HttpResponse get() throws SQLException {
-
-        List<Question> list = dao.retrieveAll(dao.getRetrieveAllString());
+    private HttpResponse get(HttpRequest request) throws SQLException {
 
         StringBuilder result = new StringBuilder();
 
-        for (var q : list) {
-            result.append("<h3>").append(q.getQuestionTitle()).append("</h3>");
-            result.append("<p>").append(q.getQuestionText()).append("</p>");
-            result.append("<p><a href='/addAnswer.html?id=").append(q.getId())
-                    .append("&questionTitle=").append(q.getQuestionTitle())
-                    .append("&questionText=").append(q.getQuestionText())
-                    .append("'>Answer question</a></p>");
-            result.append("<p><a href='/allAnswers.html?id=").append(q.getId())
-                    .append("&questionTitle=").append(q.getQuestionTitle())
-                    .append("&questionText=").append(q.getQuestionText())
-                    .append("'>See all answers</a></p>");
-            result.append("<p><a href='/editQuestion.html?id=").append(q.getId())
-                    .append("&questionTitle=").append(q.getQuestionTitle())
-                    .append("&questionText=").append(q.getQuestionText())
-                    .append("'>Edit question</a></p>");
+        if (request.getQueryString() == null) {
+
+            List<Question> list = dao.retrieveAll(dao.getRetrieveAllString());
+
+            for (var q : list) {
+                result.append("<h3>").append(q.getQuestionTitle()).append("</h3>");
+                result.append("<p>").append(q.getQuestionText()).append("</p>");
+                result.append("<p><a href='/addAnswer.html?id=").append(q.getId())
+                        .append("&questionTitle=").append(q.getQuestionTitle())
+                        .append("&questionText=").append(q.getQuestionText())
+                        .append("'>Answer question</a></p>");
+                result.append("<p><a href='/allAnswers.html?id=").append(q.getId())
+                        .append("&questionTitle=").append(q.getQuestionTitle())
+                        .append("&questionText=").append(q.getQuestionText())
+                        .append("'>See all answers</a></p>");
+                result.append("<p><a href='/editQuestion.html?id=").append(q.getId())
+                        .append("&questionTitle=").append(q.getQuestionTitle())
+                        .append("&questionText=").append(q.getQuestionText())
+                        .append("'>Edit question</a></p>");
+            }
+        } else {
+
+            HashMap qp = request.parseQueryParameters();
+
+            result.append("<input type'hidden' name='id' value='").append(qp.get("id"))
+                    .append("'><p><label>Title: <input type='text' name='questionTitle' value='")
+                    .append(qp.get("questionTitle"))
+                    .append("'></label></p><p><label>Question: <input type='text' name='questionText' value='")
+                    .append(qp.get("questionText"))
+                    .append("'></label></p>");
         }
 
         return new HttpResponse(ResponseCode.OK, result.toString(), "text/html");
@@ -63,7 +76,7 @@ public class QuestionsController implements Controller {
 
         HashMap<String, String> qp = request.parseQueryParameters();
 
-        Question q = new Question(qp.get("questionTitle"), qp.get("questionText"));
+        Question q = new Question(qp.get("question_title"), qp.get("question_text"));
         dao.save(q, dao.getSaveString());
 
         HttpResponse response = new HttpResponse(ResponseCode.SEE_OTHER, "Redirecting", "text/plain");
@@ -75,7 +88,7 @@ public class QuestionsController implements Controller {
 
         HashMap<String, String> qp = request.parseQueryParameters();
 
-        Question q = new Question(qp.get("questionTitle"), qp.get("questionText"));
+        Question q = new Question(qp.get("question_title"), qp.get("question_text"));
         q.setId(Long.parseLong(qp.get("id")));
         dao.update(q, dao.getUpdateString());
 

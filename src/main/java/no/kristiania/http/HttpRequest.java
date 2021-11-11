@@ -44,4 +44,8 @@ public class HttpRequest extends HttpMessage {
     public String getPath() {
         return path;
     }
+
+    public String getQueryString() {
+        return queryString;
+    }
 }

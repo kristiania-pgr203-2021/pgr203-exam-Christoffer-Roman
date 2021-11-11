@@ -9,8 +9,7 @@
 <main>
     <!--TODO: finish html-->
     <h1>Edit Question</h1>
-    <form action="/api/questions" method="post">
-        <input type="hidden" name="dbAction" value="update">
+    <form action="/api/questions" method="patch">
         <div id="output"></div>
         <button>Submit</button>
     </form>
@@ -20,11 +19,11 @@
 
 </body>
 <script>
-    fetch("/api/questions?")
+    fetch("/api/questions")
         .then(function(response) {
             return response.text();
         }).then(function(text) {
-        document.getElementById("questions").innerHTML = text;
+        document.getElementById("output").innerHTML = text;
     });
 </script>
 </html>
