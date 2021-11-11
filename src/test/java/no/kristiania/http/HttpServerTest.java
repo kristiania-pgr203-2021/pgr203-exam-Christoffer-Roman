@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalTime;
 
@@ -23,7 +24,7 @@ class HttpServerTest {
     @Test
     void shouldReturn404WithRequestTarget() throws IOException {
         HttpClient client = new HttpClient("localhost", server.getPort(), "/not-there");
-        assertEquals("not found!", client.getMessageBody().toLowerCase());
+        assertEquals("404 Not Found", client.getMessageBody());
     }
 
     @Test
@@ -31,7 +32,7 @@ class HttpServerTest {
         String fileContent = "A file created at: " + LocalTime.now();
         String path = "/example-file.txt";
         server.setRoot(Paths.get("target/test-classes"));
-        server.addController(path, new FileController(server));
+        server.addController(path, new FileController());
         Files.write(Paths.get("target/test-classes/" + path), fileContent.getBytes());
         HttpClient client = new HttpClient("localhost", server.getPort(), path);
         assertEquals(fileContent, client.getMessageBody());
@@ -40,7 +41,9 @@ class HttpServerTest {
     @Test
     void shouldHandleMultipleRequest() throws IOException {
         String target = "/index.html";
-        server.addController(target, new FileController(server));        HttpClient client = new HttpClient("localhost", server.getPort(), target);
+        server.setRoot(Path.of("src/main/resources"));
+        server.addController(target, new FileController());
+        HttpClient client = new HttpClient("localhost", server.getPort(), target);
         assertEquals(200, client.getResponseCode());
 
         client = new HttpClient("localhost", server.getPort(), "/notavailable");

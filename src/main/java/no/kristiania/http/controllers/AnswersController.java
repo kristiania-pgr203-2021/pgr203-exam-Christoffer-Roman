@@ -2,8 +2,10 @@ package no.kristiania.http.controllers;
 
 import no.kristiania.dao.AnswerDao;
 import no.kristiania.dao.model.Answer;
-import no.kristiania.dao.model.Question;
-import no.kristiania.http.*;
+import no.kristiania.http.HttpMethod;
+import no.kristiania.http.HttpRequest;
+import no.kristiania.http.HttpResponse;
+import no.kristiania.http.ResponseCode;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -12,6 +14,7 @@ import java.util.List;
 
 public class AnswersController implements Controller {
 
+    public static final String PATH = "/api/answers";
     private AnswerDao dao;
     private HashMap<String, String> queryParameters;
 
@@ -20,7 +23,7 @@ public class AnswersController implements Controller {
     }
 
     @Override
-    public HttpResponse handle(HttpRequest request) throws SQLException, IOException {
+    public HttpResponse handle(HttpRequest request) throws SQLException {
 
         if (request.getMethod().equals(HttpMethod.GET)) {
             return get(request);
@@ -59,7 +62,6 @@ public class AnswersController implements Controller {
 
     public void setQueryParameters(String queryString) {
         queryParameters = null; // Clearing if there was old queryParameters
-        if (queryString.equals("") || queryString == null) return;
         queryParameters = HttpRequest.parseQueryParameters(queryString);
     }
 }

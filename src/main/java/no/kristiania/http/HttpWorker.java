@@ -28,9 +28,10 @@ public class HttpWorker implements Runnable {
             headers = HttpMessage.readInputHeaders(socket);
             HttpMethod method = HttpMethod.valueOf(requestLine[0].toUpperCase());
             String path = requestLine[1];
-            String queryString = "";
+            String queryString = null;
 
             // Checking if path contains queries
+
             int questionPos = path.indexOf("?");
             if (questionPos != -1) {
                 queryString = path.substring(questionPos + 1);
@@ -58,7 +59,7 @@ public class HttpWorker implements Runnable {
             }
 
 
-        } catch (IOException | SQLException e) {
+        } catch (IOException | SQLException | RuntimeException e) {
             try {
                 write(new HttpResponse(ResponseCode.ERROR, ResponseCode.ERROR.toString(), "text/plain"), socket);
             } catch (IOException ex) {

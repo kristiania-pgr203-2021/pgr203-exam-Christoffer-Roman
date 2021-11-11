@@ -13,6 +13,7 @@ import java.util.List;
 
 public class QuestionsController implements Controller {
 
+    public static final String PATH = "/api/questions";
     private QuestionDao dao;
     private HashMap<String, String> queryParameters;
 
@@ -100,7 +101,6 @@ public class QuestionsController implements Controller {
 
     public void setQueryParameters(String queryString) {
         queryParameters = null; // Clearing if there was old queryParameters
-        if (queryString.equals("") || queryString == null) return;
         queryParameters = HttpRequest.parseQueryParameters(queryString);
     }
 }

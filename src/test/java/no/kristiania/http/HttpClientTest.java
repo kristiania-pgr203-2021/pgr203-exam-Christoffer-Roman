@@ -7,6 +7,7 @@ import no.kristiania.http.controllers.QuestionsController;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -45,12 +46,13 @@ public class HttpClientTest {
     void shouldGetRedirected() throws IOException {
         QuestionDao dao = new QuestionDao(TestData.testDataSource());
         server.addController("/api/questions", new QuestionsController(dao));
-        server.addController("/allQuestions.html", new FileController(server));
+        server.addController("/allQuestions.html", new FileController());
 
-
+        server.setRoot(Path.of("src/main/resources"));
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/questions", HttpMethod.POST,
                 "dbAction=save&questionTitle=Cola&questionText=Liker du cola?");
 
-        assertEquals(303, client.getResponseCode());
+        assertEquals(200, client.getResponseCode());
+        assertEquals("/allQuestions.html", client.getHeader("Target"));
     }
 }

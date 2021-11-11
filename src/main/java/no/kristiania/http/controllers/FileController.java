@@ -1,22 +1,34 @@
 package no.kristiania.http.controllers;
 
-import no.kristiania.http.*;
+import no.kristiania.http.HttpMessage;
+import no.kristiania.http.HttpRequest;
+import no.kristiania.http.HttpResponse;
+import no.kristiania.http.ResponseCode;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.sql.SQLException;
+import java.io.InputStream;
+import java.util.List;
 
 public class FileController implements Controller {
-    private final HttpServer server;
+    private static final List<String> PATHS = List.of("/index.html", "/addAnswer.html", "/addQuestion.html",
+            "/allAnswers.html", "/allQuestions.html", "/editQuestion.html", "/style.css");
 
-    public FileController(HttpServer server) {
-        this.server = server;
+
+    public static List<String> PATHS() {
+        return PATHS;
     }
 
     @Override
     public HttpResponse handle(HttpRequest request) throws IOException {
-        String responseMessage = Files.readString(server.getRootPath().resolve(request.getPath().substring(1)));
-        String contentType = HttpMessage.getContentType(request.getPath());
-        return new HttpResponse(ResponseCode.OK, responseMessage, contentType);
+        InputStream fileResource = getClass().getResourceAsStream(request.getPath());
+        if (fileResource != null) {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            fileResource.transferTo(buffer);
+            String responseMessage = buffer.toString();
+            String contentType = HttpMessage.getContentType(request.getPath());
+            return new HttpResponse(ResponseCode.OK, responseMessage, contentType);
+        }
+        return new HttpResponse(ResponseCode.ERROR, ResponseCode.ERROR.toString(), "text/plain");
     }
 }

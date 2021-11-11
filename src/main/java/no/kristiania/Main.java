@@ -24,17 +24,13 @@ public class Main {
         DataSource dataSource = createDataSource();
         QuestionDao questionDao = new QuestionDao(dataSource);
         AnswerDao answerDao = new AnswerDao(dataSource);
-        FileController fileController = new FileController(server);
-        server.addController("/index.html", fileController);
-        server.addController("/allAnswers.html", fileController);
-        server.addController("/addAnswer.html", fileController);
-        server.addController("/editQuestion.html", fileController);
-        server.addController("/addQuestion.html", fileController);
-        server.addController("/allQuestions.html", fileController);
-        server.addController("/style.css", fileController);
-        server.addController("/api/questions", new QuestionsController(questionDao));
-        server.addController("/api/answers", new AnswersController(answerDao));
-        logger.info("Server running on: http://localhost:{}", server.getPort());
+        server.addController(QuestionsController.PATH, new QuestionsController(questionDao));
+        server.addController(AnswersController.PATH, new AnswersController(answerDao));
+        FileController fileController = new FileController();
+        for (String path : FileController.PATHS()) {
+            server.addController(path, fileController);
+        }
+        logger.info("Server running on: http://localhost:"+ server.getPort());
     }
 
     private static DataSource createDataSource() throws IOException {

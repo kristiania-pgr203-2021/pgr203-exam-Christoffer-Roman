@@ -56,8 +56,8 @@ public class HttpClient {
                         "\r\n";
 
         socket.getOutputStream().write(request.getBytes());
-
         readResponse();
+        headerFields.put("Target", target);
     }
 
     private void readResponse() throws IOException {
@@ -76,8 +76,6 @@ public class HttpClient {
         if (responseCode == 303) {
             socket = new Socket(host, port);
             executeGetRequest(host, headerFields.get("Location"));
-
-            // new HttpClient(host, port, headerFields.get("Location"));
         }
     }
 

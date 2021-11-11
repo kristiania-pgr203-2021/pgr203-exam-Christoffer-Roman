@@ -13,7 +13,7 @@ public class HttpServer implements Runnable {
     private ServerSocket serverSocket;
     private final int port;
     private boolean running;
-    private Path rootPath = Path.of("src/main/resources");
+    private Path rootPath;
     private HashMap<String, Controller> controllers = new HashMap<>();
 
     public HttpServer(int port) {
@@ -57,6 +57,13 @@ public class HttpServer implements Runnable {
 
     public void start() {
         new Thread(this).start();
+        // Need thread to sleep for short while to let server start on separate thread.
+        // Tests with maven fails otherwise.
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void setRoot(Path rootPath) {

@@ -35,7 +35,7 @@ public class QuestionDaoTest {
     }
 
     @Test
-    void shouldAddAndReturnQuestionViaPost() throws IOException, SQLException, InterruptedException {
+    void shouldAddAndReturnQuestionViaPost() throws IOException, SQLException {
         Question question = new Question("Cola", "Liker du cola?");
         QuestionDao dao = new QuestionDao(TestData.testDataSource());
         //assertEquals(1, question.getId());
@@ -43,7 +43,7 @@ public class QuestionDaoTest {
         server.addController("/api/questions",
                 new QuestionsController(dao));
         server.addController("/allQuestions.html",
-                new FileController(server));
+                new FileController());
 
         /*
         HttpClient client = new HttpClient("localhost", server.getPort(),
@@ -69,7 +69,7 @@ public class QuestionDaoTest {
     }
 
     @Test
-    void shouldAddAndCheckUTF8Encoding() throws IOException, SQLException, InterruptedException {
+    void shouldAddAndCheckUTF8Encoding() throws IOException, SQLException {
         String questionText = "Liker du blå gjæss ellær?";
         String questionTitle = "Blå gjæss ellær";
         Question question = new Question(questionTitle, questionText);
@@ -78,7 +78,7 @@ public class QuestionDaoTest {
         server.addController("/api/questions",
                 new QuestionsController(dao));
         server.addController("/allQuestions.html",
-                new FileController(server));
+                new FileController());
 
         HttpClient client = new HttpClient("localhost", server.getPort(),
                 "/api/questions", HttpMethod.POST,
