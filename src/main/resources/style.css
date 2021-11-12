@@ -1,0 +1,9 @@
+div{
+    margin: 10px;
+}
+form{
+    display: none;
+}
+#regular{
+    display: block;
+}
