@@ -35,7 +35,7 @@ public class AnswersController implements Controller {
 
     private HttpResponse get() throws SQLException {
 
-        List<Answer> list = dao.retrieveByQuestionId(Long.parseLong(queryParameters.get("id")), dao.getRetrieveByIdString());
+        List<Answer> list = dao.retrieveByQuestionId(Long.parseLong(queryParameters.get("id")), dao.getRetrieveByQuestionIdString());
 
         StringBuilder result = new StringBuilder();
         result.append("<ul>");

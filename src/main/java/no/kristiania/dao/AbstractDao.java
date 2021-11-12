@@ -20,7 +20,7 @@ public abstract class AbstractDao<T extends AbstractModel> {
     }
 
     public abstract String getSaveString();
-    public abstract String getRetrieveByIdString();
+    public abstract String getRetrieveByQuestionIdString();
     public abstract String getRetrieveAllString();
     public abstract String getUpdateString();
 

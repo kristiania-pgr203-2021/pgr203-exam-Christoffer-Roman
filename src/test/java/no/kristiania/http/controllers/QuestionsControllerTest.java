@@ -33,7 +33,7 @@ public class QuestionsControllerTest {
         Question expectedQuestion = new Question("Cola", "Liker du cola?", Question.QuestionType.REGULAR);
         expectedQuestion.setId(1);
 
-        Question retrievedQuestion = dao.retrieveById(expectedQuestion.getId(), dao.getRetrieveByIdString());
+        Question retrievedQuestion = dao.retrieveById(expectedQuestion.getId(), dao.getRetrieveByQuestionIdString());
 
         assertThat(retrievedQuestion)
                 .isEqualTo(expectedQuestion)
@@ -66,7 +66,7 @@ public class QuestionsControllerTest {
         Question expectedQuestion = new Question("Sult", "Er du sulten?", Question.QuestionType.REGULAR);
         expectedQuestion.setId(savedQuestion.getId());
 
-        Question retrievedQuestion = dao.retrieveById(expectedQuestion.getId(), dao.getRetrieveByIdString());
+        Question retrievedQuestion = dao.retrieveById(expectedQuestion.getId(), dao.getRetrieveByQuestionIdString());
 
         // TODO: Does not take question type into account! QuestionDao.updateString must be changed and QuestionsController refactored!
         assertThat(retrievedQuestion)

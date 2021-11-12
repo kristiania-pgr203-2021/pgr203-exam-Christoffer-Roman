@@ -61,7 +61,7 @@ class HttpServerTest {
                 "/api/questions", HttpMethod.POST,
                 "dbAction=save&questionTitle=" + questionTitle + "&questionText=" + questionText);
 
-        assertThat(dao.retrieveById(question.getId(), dao.getRetrieveByIdString()))
+        assertThat(dao.retrieveById(question.getId(), dao.getRetrieveByQuestionIdString()))
                 .isEqualTo(question)
                 .hasNoNullFieldsOrProperties()
                 .usingRecursiveComparison();

@@ -18,7 +18,7 @@ public class QuestionDaoTest {
         Question question = new Question("Backflip", "Kan du backflip?", Question.QuestionType.REGULAR);
         dao.save(question, dao.getSaveString());
 
-        assertThat(dao.retrieveById(question.getId(), dao.getRetrieveByIdString()))
+        assertThat(dao.retrieveById(question.getId(), dao.getRetrieveByQuestionIdString()))
                 .hasNoNullFieldsOrProperties()
                 .usingRecursiveComparison()
                 .isEqualTo(question);
@@ -40,7 +40,7 @@ public class QuestionDaoTest {
         }
 
         for (Question q : questions) {
-            assertThat(dao.retrieveById(q.getId(), dao.getRetrieveByIdString()))
+            assertThat(dao.retrieveById(q.getId(), dao.getRetrieveByQuestionIdString()))
                     .hasNoNullFieldsOrProperties()
                     .usingRecursiveComparison()
                     .isEqualTo(q);
@@ -62,7 +62,7 @@ public class QuestionDaoTest {
         dao.update(updatedQuestion, dao.getUpdateString());
 
         // TODO: Does not take question type into account! QuestionDao.updateString must be changed!
-        assertThat(dao.retrieveById(updatedQuestion.getId(), dao.getRetrieveByIdString()))
+        assertThat(dao.retrieveById(updatedQuestion.getId(), dao.getRetrieveByQuestionIdString()))
                 .hasNoNullFieldsOrProperties()
                 .usingRecursiveComparison()
                 .isEqualTo(updatedQuestion);

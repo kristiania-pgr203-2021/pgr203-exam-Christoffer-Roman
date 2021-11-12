@@ -26,7 +26,7 @@ public class QuestionDao extends AbstractDao<Question> {
     }
 
     @Override
-    public String getRetrieveByIdString() {
+    public String getRetrieveByQuestionIdString() {
         return retrieveByIdString;
     }
 

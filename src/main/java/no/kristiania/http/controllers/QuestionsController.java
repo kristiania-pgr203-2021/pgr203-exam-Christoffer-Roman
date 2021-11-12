@@ -16,6 +16,7 @@ public class QuestionsController implements Controller {
 
     public static final String PATH = "/api/questions";
     private QuestionDao dao;
+    private AnswerAlternativeDao alternativeDao = new AnswerAlternativeDao(Main.getDataSource());
     private HashMap<String, String> queryParameters;
 
     public QuestionsController(QuestionDao dao) {
@@ -61,15 +62,14 @@ public class QuestionsController implements Controller {
 
     private void getMultiple(StringBuilder result) throws SQLException {
         getRegular(result);
-        AnswerAlternativeDao alternativeDao = new AnswerAlternativeDao(Main.getDataSource());
         List<AnswerAlternative> alternatives = alternativeDao.retrieveAllById(
                 Long.parseLong(queryParameters.get("id")),
-                alternativeDao.getRetrieveByIdString());
+                alternativeDao.getRetrieveByQuestionIdString());
         for (int i = 1; i <= alternatives.size(); i++) {
             result.append("<label>Answer")
                     .append(i)
                     .append("</label><input name='answer")
-                    .append(i)
+                    .append(alternatives.get(i - 1).getId())
                     .append("' type='text' placeholder='")
                     .append(alternatives.get(i - 1).getAnswerText())
                     .append("'>");
@@ -116,7 +116,6 @@ public class QuestionsController implements Controller {
 
 
     private HttpResponse postMultipleAnswers() throws SQLException {
-        AnswerAlternativeDao answerAlternativeDao = new AnswerAlternativeDao(Main.getDataSource());
         Question question = new Question(queryParameters.get("questionTitle"),
                 queryParameters.get("questionText"), Question.QuestionType.MULTIPLE_ANSWERS);
         dao.save(question, dao.getSaveString());
@@ -124,7 +123,7 @@ public class QuestionsController implements Controller {
         for (Map.Entry<String, String> entry : queryParameters.entrySet()) {
             if (entry.getKey().contains("answer")) {
                 AnswerAlternative answerAlternative = new AnswerAlternative(entry.getValue(), question.getId());
-                answerAlternativeDao.save(answerAlternative, answerAlternativeDao.saveString);
+                alternativeDao.save(answerAlternative, alternativeDao.saveString);
             }
         }
 
@@ -133,7 +132,7 @@ public class QuestionsController implements Controller {
 
     private HttpResponse patch() throws SQLException {
 
-        Question fromDb = dao.retrieveById(Long.parseLong(queryParameters.get("id")), dao.getRetrieveByIdString());
+        Question fromDb = dao.retrieveById(Long.parseLong(queryParameters.get("id")), dao.getRetrieveByQuestionIdString());
         String questionTitle = queryParameters.get("questionTitle");
         String questionText = queryParameters.get("questionText");
         if (!questionTitle.equals("")) {
@@ -144,6 +143,16 @@ public class QuestionsController implements Controller {
         }
 
         dao.update(fromDb, dao.getUpdateString());
+
+        for (var entry : queryParameters.entrySet()) {
+            if (entry.getKey().contains("answer")) {
+                if (entry.getValue().equals("")) continue;
+                long id = Long.parseLong(entry.getKey().replace("answer", ""));
+                var alternative = alternativeDao.retrieveById(id, alternativeDao.retrieveByIdString);
+                alternative.setAnswerText(entry.getValue());
+                alternativeDao.update(alternative, alternativeDao.updateString);
+            }
+        }
 
         return redirectResponse("/allQuestions.html");
     }

@@ -7,7 +7,6 @@ import no.kristiania.http.HttpRequest;
 import no.kristiania.http.HttpResponse;
 import no.kristiania.http.ResponseCode;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +36,7 @@ public class AnswerAlternativesController implements Controller{
     }
 
     private HttpResponse get() throws SQLException {
-        List<AnswerAlternative> alternatives = dao.retrieveAllById(Long.parseLong(queryParameters.get("id")), dao.getRetrieveByIdString());
+        List<AnswerAlternative> alternatives = dao.retrieveAllById(Long.parseLong(queryParameters.get("id")), dao.getRetrieveByQuestionIdString());
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < alternatives.size(); i++) {
 

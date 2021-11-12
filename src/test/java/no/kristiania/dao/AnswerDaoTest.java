@@ -3,8 +3,6 @@ package no.kristiania.dao;
 import no.kristiania.TestData;
 import no.kristiania.dao.model.Answer;
 import no.kristiania.dao.model.Question;
-import no.kristiania.http.HttpServer;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,7 +26,7 @@ public class AnswerDaoTest {
         Answer answer = new Answer("JA!", question.getId());
         answerDao.save(answer, answerDao.getSaveString());
 
-        assertThat(answerDao.retrieveById(answer.getQuestionId(), answerDao.getRetrieveByIdString()))
+        assertThat(answerDao.retrieveById(answer.getQuestionId(), answerDao.getRetrieveByQuestionIdString()))
                 .hasNoNullFieldsOrProperties()
                 .usingRecursiveComparison()
                 .isEqualTo(answer);
@@ -54,7 +52,7 @@ public class AnswerDaoTest {
         }
 
         for (Answer a : answers) {
-            assertThat(answerDao.retrieveById(question.getId(), answerDao.getRetrieveByIdString()))
+            assertThat(answerDao.retrieveById(question.getId(), answerDao.getRetrieveByQuestionIdString()))
                     .hasNoNullFieldsOrProperties()
                     .usingRecursiveComparison()
                     .isEqualTo(a);
