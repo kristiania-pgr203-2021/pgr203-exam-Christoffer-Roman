@@ -6,10 +6,8 @@ import no.kristiania.http.HttpMethod;
 import no.kristiania.http.HttpRequest;
 import no.kristiania.http.HttpServer;
 import no.kristiania.http.controllers.QuestionsController;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
+
 import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,16 +60,45 @@ public class QuestionDaoTest {
         qCon.setQueryParameters(request.getQueryString());
         qCon.handle(request);
 
-        Question question = new Question("Cola", "Liker du cola?", Question.QuestionType.REGULAR);
+        Question expectedQuestion = new Question("Cola", "Liker du cola?", Question.QuestionType.REGULAR);
         // Because QuestionsController never returns the Question-object it creates,
         // the test has to use a static ID value for assertions. Order of tests is
-        // therefore critical
-        question.setId(1);
+        // therefore critical for this specific test
+        expectedQuestion.setId(1);
 
-        Question retrievedQuestion = dao.retrieveById(question.getId(), dao.getRetrieveByIdString());
+        Question retrievedQuestion = dao.retrieveById(expectedQuestion.getId(), dao.getRetrieveByIdString());
 
         assertThat(retrievedQuestion)
-                .isEqualTo(question)
+                .isEqualTo(expectedQuestion)
+                .hasNoNullFieldsOrProperties()
+                .usingRecursiveComparison();
+    }
+
+    @Test
+    void shouldUpdateQuestionViaPostRequest() throws SQLException {
+
+        Question savedQuestion = new Question("Sult", "Er du mett?", Question.QuestionType.REGULAR);
+        dao.save(savedQuestion, dao.getSaveString());
+
+        server.addController("/api/questions", new QuestionsController(dao));
+
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "/api/questions");
+        request.setQueryString(
+                "dbAction=update&id="
+                + savedQuestion.getId()
+                + "&questionType=regular&questionTitle=Sult&questionText=Er du sulten?");
+
+        QuestionsController qCon = (QuestionsController)server.getController("/api/questions");
+        qCon.setQueryParameters(request.getQueryString());
+        qCon.handle(request);
+
+        Question expectedQuestion = new Question("Sult", "Er du sulten?", Question.QuestionType.REGULAR);
+        expectedQuestion.setId(savedQuestion.getId());
+
+        Question retrievedQuestion = dao.retrieveById(expectedQuestion.getId(), dao.getRetrieveByIdString());
+
+        assertThat(retrievedQuestion)
+                .isEqualTo(expectedQuestion)
                 .hasNoNullFieldsOrProperties()
                 .usingRecursiveComparison();
     }
