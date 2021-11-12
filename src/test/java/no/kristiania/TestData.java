@@ -13,4 +13,8 @@ public class TestData {
         Flyway.configure().dataSource(dataSource).load().migrate();
         return dataSource;
     }
+
+    public static void cleanDataSource(DataSource dataSource) {
+        Flyway.configure().dataSource(dataSource).load().clean();
+    }
 }

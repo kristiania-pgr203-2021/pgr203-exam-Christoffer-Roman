@@ -12,6 +12,8 @@ public class QuestionDao extends AbstractDao<Question> {
     private final String saveString = "insert into questions (question_title, question_text, question_type) values (?, ?, ?)";
     private final String retrieveByIdString = "select * from questions where id = ?";
     private final String retrieveAllString = "select * from questions";
+
+    // TODO: updateString needs to take question type into account!
     private final String updateString = "update questions set question_title = ?, question_text = ? where id = ?";
 
     public QuestionDao(DataSource dataSource) {
