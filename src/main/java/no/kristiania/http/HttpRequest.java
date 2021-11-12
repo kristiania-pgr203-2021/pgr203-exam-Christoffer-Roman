@@ -6,6 +6,8 @@ public class HttpRequest extends HttpMessage {
 
     private String path;
     private HttpMethod method;
+    private String host;
+    private String body;
 
     public void setQueryString(String queryString) {
         this.queryString = queryString;
@@ -16,6 +18,12 @@ public class HttpRequest extends HttpMessage {
     public HttpRequest(HttpMethod method, String path) {
         this.method = method;
         this.path = path;
+    }
+
+    public HttpRequest(HttpMethod method, String path, String host) {
+        this.method = method;
+        this.path = path;
+        this.host = host;
     }
 
     public static HashMap<String, String> parseQueryParameters(String queryString) {
@@ -51,5 +59,25 @@ public class HttpRequest extends HttpMessage {
 
     public String getQueryString() {
         return queryString;
+    }
+
+    @Override
+    public String toString() {
+
+        StringBuilder result = new StringBuilder();
+
+        if (method.equals(HttpMethod.GET)) {
+            result.append(method.name() + " " + path+queryString + " HTTP/1.1\r\n");
+            result.append("Host: " + host + "\r\nConnection: keep-alive\r\n\r\n");
+
+            return result.toString();
+        }
+
+        result.append(method.name() + " " + path + " HTTP/1.1\r\n");
+        result.append("Content-Length: ").append(queryString.length()).append("\r\n");
+        result.append("Host: " + host + "\r\nConnection: keep-alive\r\n\r\n");
+        result.append(queryString);
+
+        return result.toString();
     }
 }
