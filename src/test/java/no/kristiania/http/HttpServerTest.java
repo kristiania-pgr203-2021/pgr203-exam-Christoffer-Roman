@@ -1,5 +1,6 @@
 package no.kristiania.http;
 
+import no.kristiania.HttpClient;
 import no.kristiania.http.controllers.FileController;
 import org.junit.jupiter.api.Test;
 

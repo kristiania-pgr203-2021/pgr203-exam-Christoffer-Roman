@@ -1,5 +1,6 @@
 package no.kristiania.http;
 
+import no.kristiania.HttpClient;
 import no.kristiania.TestData;
 import no.kristiania.dao.QuestionDao;
 import no.kristiania.http.controllers.FileController;

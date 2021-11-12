@@ -2,7 +2,7 @@ package no.kristiania.dao;
 
 import no.kristiania.TestData;
 import no.kristiania.dao.model.Question;
-import no.kristiania.http.HttpClient;
+import no.kristiania.HttpClient;
 import no.kristiania.http.HttpMethod;
 import no.kristiania.http.HttpRequest;
 import no.kristiania.http.HttpServer;

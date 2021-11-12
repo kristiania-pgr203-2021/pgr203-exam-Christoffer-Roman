@@ -1,4 +1,7 @@
-package no.kristiania.http;
+package no.kristiania;
+
+import no.kristiania.http.HttpMessage;
+import no.kristiania.http.HttpMethod;
 
 import java.io.IOException;
 import java.net.Socket;
