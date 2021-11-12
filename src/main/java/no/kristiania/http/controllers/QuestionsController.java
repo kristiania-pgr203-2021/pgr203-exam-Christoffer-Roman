@@ -1,12 +1,16 @@
 package no.kristiania.http.controllers;
 
+import no.kristiania.Main;
+import no.kristiania.dao.AnswerAlternativeDao;
 import no.kristiania.dao.QuestionDao;
+import no.kristiania.dao.model.AnswerAlternative;
 import no.kristiania.http.*;
 import no.kristiania.dao.model.Question;
 
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class QuestionsController implements Controller {
 
@@ -23,7 +27,10 @@ public class QuestionsController implements Controller {
         if (request.getMethod().equals(HttpMethod.GET)) {
             return get();
         } else if (request.getMethod().equals(HttpMethod.POST)) {
-            if (queryParameters.get("dbAction").equals("update")) return patch();
+            if (queryParameters.get("dbAction").equals("update"))
+                return patch();
+            if (queryParameters.get("dbAction").equals("multipleAnswers"))
+                return postMultipleAnswers();
             return post();
         }
 
@@ -72,13 +79,27 @@ public class QuestionsController implements Controller {
     }
 
     private HttpResponse post() throws SQLException {
-
         Question q = new Question(queryParameters.get("questionTitle"), queryParameters.get("questionText"));
         dao.save(q, dao.getSaveString());
 
-        HttpResponse response = new HttpResponse(ResponseCode.SEE_OTHER, "Redirecting", "text/plain");
-        response.addHeader("Location", "/allQuestions.html");
-        return response;
+        return redirectResponse("/allQuestions.html");
+    }
+
+
+    private HttpResponse postMultipleAnswers() throws SQLException {
+        AnswerAlternativeDao answerAlternativeDao = new AnswerAlternativeDao(Main.getDataSource());
+        Question question = new Question(queryParameters.get("questionTitle"),
+                queryParameters.get("questionText"), Question.QuestionType.MULTIPLE_ANSWERS);
+        dao.save(question, dao.getSaveString());
+
+        for (Map.Entry<String, String> entry : queryParameters.entrySet()) {
+            if (entry.getKey().contains("answer")) {
+                AnswerAlternative answerAlternative = new AnswerAlternative(entry.getValue(), question.getId());
+                answerAlternativeDao.save(answerAlternative, answerAlternativeDao.saveString);
+            }
+        }
+
+        return redirectResponse("/allQuestions.html");
     }
 
     private HttpResponse patch() throws SQLException {
@@ -95,8 +116,12 @@ public class QuestionsController implements Controller {
 
         dao.update(fromDb, dao.getUpdateString());
 
+        return redirectResponse("/allQuestions.html");
+    }
+
+    private HttpResponse redirectResponse(String location) {
         HttpResponse response = new HttpResponse(ResponseCode.SEE_OTHER, "Redirecting", "text/plain");
-        response.addHeader("Location", "/allQuestions.html");
+        response.addHeader("Location", location);
         return response;
     }
 

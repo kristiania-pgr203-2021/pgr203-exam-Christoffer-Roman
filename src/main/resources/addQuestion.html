@@ -27,9 +27,10 @@
             </form>
         </div>
         </div>
-            <form id="multiple answers" action="/api/questions" method="post">
-                <input type="hidden" name="dbAction" value="save">
+            <form id="multipleAnswers" action="/api/questions" method="post">
+                <input type="hidden" name="dbAction" value="multipleAnswers">
                 <p><label>Title: <input type="text" name="questionTitle"></label></p>
+                <p><label>Question: <input type="text" name="questionText"></label></p>
                 <label>How many answers?</label>
                 <select id="countOfAnswers">
                     <option selected value="2">2</option>
@@ -40,12 +41,12 @@
                     <label>Answer 2</label>
                     <input name="answer2" type="text">
                 </div>
-                <button>Submit</button>
+                <button id="multipleAnswersBtn">Submit</button>
             </form>
         </div>
         </div>
             <form id="scale" action="/api/questions" method="post">
-                <input type="hidden" name="dbAction" value="save">
+                <input type="hidden" name="dbAction" value="scale">
                 <p><label>Title: <input type="text" name="questionTitle"></label></p>
                 <p><label>Question: <input type="text" name="questionText"></label></p>
 
@@ -55,12 +56,15 @@
     </main>
 <script>
     const regularForm = document.getElementById("regular");
-    const multipleForm = document.getElementById("multiple answers");
+    const multipleForm = document.getElementById("multipleAnswers");
+    const multipleBtn = document.getElementById("multipleAnswersBtn");
     const scaleForm = document.getElementById("scale");
     const selector = document.getElementById("questionType");
     const countSelector = document.getElementById("countOfAnswers");
+
     selector.onchange = switchQuestionType
     countSelector.onchange = countOfAnswers;
+    multipleBtn.onclick
 
     const forms = [regularForm, multipleForm, scaleForm];
 

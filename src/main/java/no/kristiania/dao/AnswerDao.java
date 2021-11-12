@@ -8,7 +8,7 @@ import java.util.List;
 
 public class AnswerDao extends AbstractDao<Answer> {
 
-    private final String saveString = "insert into answers (answer_text, question_id) values (?, ?)";
+    private final String saveString = "insert into answers (answer_text, question_id, question_type) values (?, ?, ?)";
     private final String retrieveByIdString = "select * from answers where question_id = ?";
     private final String retrieveAllString = "select * from answers";
     private final String updateString = "update answers set answer_text = ? where id = ?";
@@ -44,6 +44,10 @@ public class AnswerDao extends AbstractDao<Answer> {
     public void setColumnsForSave(Answer answer, PreparedStatement statement) throws SQLException {
         statement.setString(1, answer.getAnswerText());
         statement.setLong(2, answer.getQuestionId());
+    }
+
+    public void saveAnswerAlternative() {
+
     }
 
     @Override

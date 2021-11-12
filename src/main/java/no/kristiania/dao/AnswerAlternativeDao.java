@@ -11,8 +11,8 @@ public class AnswerAlternativeDao extends AbstractDao<AnswerAlternative> {
 
     // TODO: possibly remove class
 
-    public final String saveString = "";
-    public final String retrieveByIdString = "";
+    public final String saveString = "insert into answer_alternatives(answer, question_id) values (?, ?)";
+    public final String retrieveByIdString = "select * from answer_alternatives where question_id = ?";
     public final String retrieveAllString = "";
 
     public AnswerAlternativeDao(DataSource dataSource) {
@@ -41,11 +41,12 @@ public class AnswerAlternativeDao extends AbstractDao<AnswerAlternative> {
 
     @Override
     public void setColumnsForSave(AnswerAlternative answerAlternative, PreparedStatement statement) throws SQLException {
-        // TODO: Implement method
+        statement.setString(1, answerAlternative.getQuestionText());
+        statement.setLong(2, answerAlternative.getQuestionId());
     }
 
     @Override
-    public void setColumnsForUpdate(AnswerAlternative answerAlternative, PreparedStatement statement) throws SQLException {
+    public void setColumnsForUpdate(AnswerAlternative question, PreparedStatement statement) throws SQLException {
         // TODO: Implement method
     }
 

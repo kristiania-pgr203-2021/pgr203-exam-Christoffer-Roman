@@ -1,6 +1,7 @@
 package no.kristiania.dao;
 
 import no.kristiania.dao.model.AbstractModel;
+import no.kristiania.dao.model.Question;
 
 import javax.sql.DataSource;
 import java.sql.*;

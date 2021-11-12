@@ -18,10 +18,10 @@ import java.util.Properties;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
-
+    private static DataSource dataSource;
     public static void main(String[] args) throws IOException {
         HttpServer server = new HttpServer(8008);
-        DataSource dataSource = createDataSource();
+        dataSource = createDataSource();
         QuestionDao questionDao = new QuestionDao(dataSource);
         AnswerDao answerDao = new AnswerDao(dataSource);
         server.addController(QuestionsController.PATH, new QuestionsController(questionDao));
@@ -42,9 +42,13 @@ public class Main {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
         dataSource.setUrl(properties.getProperty("dataSource.url",
                 "jdbc:postgresql://localhost:5432/questionnaire"));
-        dataSource.setUser(properties.getProperty("dataSource.user"));
+        dataSource.setUser(properties.getProperty("dataSource.username"));
         dataSource.setPassword("dataSource.password");
         Flyway.configure().dataSource(dataSource).load().migrate();
+        return dataSource;
+    }
+
+    public static DataSource getDataSource() {
         return dataSource;
     }
 }
