@@ -1,8 +1,10 @@
 package no.kristiania;
 
+import no.kristiania.dao.AnswerAlternativeDao;
 import no.kristiania.dao.AnswerDao;
 import no.kristiania.dao.QuestionDao;
 import no.kristiania.http.HttpServer;
+import no.kristiania.http.controllers.AnswerAlternativesController;
 import no.kristiania.http.controllers.AnswersController;
 import no.kristiania.http.controllers.FileController;
 import no.kristiania.http.controllers.QuestionsController;
@@ -24,8 +26,10 @@ public class Main {
         dataSource = createDataSource();
         QuestionDao questionDao = new QuestionDao(dataSource);
         AnswerDao answerDao = new AnswerDao(dataSource);
+        AnswerAlternativeDao alternativeDao = new AnswerAlternativeDao(dataSource);
         server.addController(QuestionsController.PATH, new QuestionsController(questionDao));
         server.addController(AnswersController.PATH, new AnswersController(answerDao));
+        server.addController(AnswerAlternativesController.PATH, new AnswerAlternativesController(alternativeDao));
         FileController fileController = new FileController();
         for (String path : FileController.PATHS()) {
             server.addController(path, fileController);

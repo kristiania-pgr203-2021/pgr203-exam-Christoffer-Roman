@@ -58,6 +58,7 @@ public class QuestionDao extends AbstractDao<Question> {
     public Question mapFromResultSet(ResultSet rs) throws SQLException {
         Question q = new Question(rs.getString("question_title"), rs.getString("question_text"));
         q.setId(rs.getLong("id"));
+        q.setType(rs.getInt("question_type"));
         return q;
     }
 
