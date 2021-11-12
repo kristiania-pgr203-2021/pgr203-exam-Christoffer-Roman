@@ -6,7 +6,7 @@ public class AnswerAlternativeDaoTest {
 
     // TODO: write tests when AnswerAlternativeDao is implemented
 
-    @Test
+    //@Test
     void placeholder() {
 
     }

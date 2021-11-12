@@ -6,7 +6,7 @@ public class AnswerAlternativesControllerTest {
 
     // TODO: write tests when AnswerAlternativesController is implemented
 
-    @Test
+    //@Test
     void placeholder() {
 
     }
