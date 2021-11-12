@@ -1,7 +1,6 @@
 package no.kristiania;
 
-import no.kristiania.http.HttpMessage;
-import no.kristiania.http.HttpMethod;
+import no.kristiania.http.*;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -23,6 +22,7 @@ public class HttpClient {
         this.socket = new Socket(host, port);
         executeGetRequest(target);
     }
+
     public HttpClient(String host, int port, String target, HttpMethod method, String requestBody) throws IOException {
         this.socket = new Socket(host, port);
         this.host = host;
@@ -97,4 +97,6 @@ public class HttpClient {
     public String getMessageBody(){
         return messageBody;
     }
+
+
 }
