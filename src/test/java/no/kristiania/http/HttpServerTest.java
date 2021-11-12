@@ -65,5 +65,7 @@ class HttpServerTest {
                 .isEqualTo(question)
                 .hasNoNullFieldsOrProperties()
                 .usingRecursiveComparison();
+
+        TestData.cleanDataSource(dao.getDataSource());
     }
 }
