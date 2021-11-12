@@ -87,9 +87,17 @@ public class QuestionsController implements Controller {
 
     private HttpResponse patch(HttpRequest request) throws SQLException {
 
-        Question q = new Question(queryParameters.get("questionTitle"), queryParameters.get("questionText"));
-        q.setId(Long.parseLong(queryParameters.get("id")));
-        dao.update(q, dao.getUpdateString());
+        Question fromDb = dao.retrieveById(Long.parseLong(queryParameters.get("id")), dao.getRetrieveByIdString());
+        String questionTitle = queryParameters.get("questionTitle");
+        String questionText = queryParameters.get("questionText");
+        if (!questionTitle.equals("")) {
+            fromDb.setQuestionTitle(questionTitle);
+        }
+        if (!questionText.equals("")) {
+            fromDb.setQuestionText(questionText);
+        }
+
+        dao.update(fromDb, dao.getUpdateString());
 
         HttpResponse response = new HttpResponse(ResponseCode.SEE_OTHER, "Redirecting", "text/plain");
         response.addHeader("Location", "/allQuestions.html");
