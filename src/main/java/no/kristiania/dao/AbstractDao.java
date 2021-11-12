@@ -1,7 +1,6 @@
 package no.kristiania.dao;
 
 import no.kristiania.dao.model.AbstractModel;
-import no.kristiania.dao.model.Question;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -52,6 +51,18 @@ public abstract class AbstractDao<T extends AbstractModel> {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     resultSet.next();
                     return mapFromResultSet(resultSet);
+                }
+            }
+        }
+    }
+
+    public List<T> retrieveAllById(long id, String retrieveStatement) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    retrieveStatement, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setLong(1, id);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    return mapAllFromResultSet(resultSet);
                 }
             }
         }

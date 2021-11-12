@@ -55,6 +55,10 @@ public class Question extends AbstractModel {
         return !alternatives.isEmpty();
     }
 
+    public void setType(int questionType) {
+        this.questionType = QuestionType.values()[questionType];
+    }
+
     public enum QuestionType {
         REGULAR("regular"), MULTIPLE_ANSWERS("multiple_answers"), SCALE("scale");
 

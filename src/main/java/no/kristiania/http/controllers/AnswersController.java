@@ -60,7 +60,6 @@ public class AnswersController implements Controller {
     }
 
     public void setQueryParameters(String queryString) {
-        queryParameters = null; // Clearing if there was old queryParameters
         queryParameters = HttpRequest.parseQueryParameters(queryString);
     }
 }

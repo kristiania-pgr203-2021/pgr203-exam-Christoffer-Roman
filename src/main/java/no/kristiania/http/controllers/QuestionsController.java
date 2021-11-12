@@ -49,14 +49,17 @@ public class QuestionsController implements Controller {
                 result.append("<p><a href='/addAnswer.html?id=").append(q.getId())
                         .append("&questionTitle=").append(q.getQuestionTitle())
                         .append("&questionText=").append(q.getQuestionText())
+                        .append("&questionType=").append(q.getType().ordinal())
                         .append("'>Answer question</a></p>");
                 result.append("<p><a href='/allAnswers.html?id=").append(q.getId())
                         .append("&questionTitle=").append(q.getQuestionTitle())
                         .append("&questionText=").append(q.getQuestionText())
+                        .append("&questionType=").append(q.getType().ordinal())
                         .append("'>See all answers</a></p>");
                 result.append("<p><a href='/editQuestion.html?id=").append(q.getId())
                         .append("&questionTitle=").append(q.getQuestionTitle())
                         .append("&questionText=").append(q.getQuestionText())
+                        .append("&questionType=").append(q.getType().ordinal())
                         .append("'>Edit question</a></p>");
             }
         } else {

@@ -4,20 +4,20 @@ public class AnswerAlternative extends AbstractModel {
     // TODO: possibly remove class
 
     private long id;
-    private String questionText;
+    private String answerText;
     private long questionId;
 
     public AnswerAlternative(String questionText, long questionId) {
-        this.questionText = questionText;
+        this.answerText = questionText;
         this.questionId = questionId;
     }
 
-    public String getQuestionText() {
-        return questionText;
+    public String getAnswerText() {
+        return answerText;
     }
 
-    public void setQuestionText(String questionText) {
-        this.questionText = questionText;
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
     }
 
     public long getQuestionId() {

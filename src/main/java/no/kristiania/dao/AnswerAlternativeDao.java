@@ -41,18 +41,22 @@ public class AnswerAlternativeDao extends AbstractDao<AnswerAlternative> {
 
     @Override
     public void setColumnsForSave(AnswerAlternative answerAlternative, PreparedStatement statement) throws SQLException {
-        statement.setString(1, answerAlternative.getQuestionText());
+        statement.setString(1, answerAlternative.getAnswerText());
         statement.setLong(2, answerAlternative.getQuestionId());
     }
 
     @Override
-    public void setColumnsForUpdate(AnswerAlternative question, PreparedStatement statement) throws SQLException {
+    public void setColumnsForUpdate(AnswerAlternative question, PreparedStatement statement) {
         // TODO: Implement method
     }
 
     @Override
     public AnswerAlternative mapFromResultSet(ResultSet resultSet) throws SQLException {
-        // TODO: Implement method
-        return null;
+        AnswerAlternative alternative = new AnswerAlternative(
+                resultSet.getString("answer"),
+                resultSet.getLong("question_id"));
+        alternative.setId(resultSet.getLong("id"));
+
+        return alternative;
     }
 }

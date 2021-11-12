@@ -1,5 +1,6 @@
 package no.kristiania.http;
 
+import no.kristiania.http.controllers.AnswerAlternativesController;
 import no.kristiania.http.controllers.AnswersController;
 import no.kristiania.http.controllers.Controller;
 import no.kristiania.http.controllers.QuestionsController;
@@ -45,12 +46,7 @@ public class HttpWorker implements Runnable {
                 if (method == HttpMethod.POST) {
                     queryString = HttpMessage.readBytes(socket, Integer.parseInt(headers.get("Content-Length")));
                 }
-                if (controller instanceof QuestionsController) {
-                    ((QuestionsController) controller).setQueryParameters(queryString);
-                }
-                if (controller instanceof AnswersController) {
-                    ((AnswersController) controller).setQueryParameters(queryString);
-                }
+                setQueriesOnControllers(queryString, controller);
 
                 HttpResponse httpResponse = controller.handle(new HttpRequest(method, path));
                 write(httpResponse, socket);
@@ -67,6 +63,18 @@ public class HttpWorker implements Runnable {
             } finally {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void setQueriesOnControllers(String queryString, Controller controller) {
+        if (controller instanceof QuestionsController) {
+            ((QuestionsController) controller).setQueryParameters(queryString);
+        }
+        if (controller instanceof AnswersController) {
+            ((AnswersController) controller).setQueryParameters(queryString);
+        }
+        if (controller instanceof AnswerAlternativesController) {
+            ((AnswerAlternativesController) controller).setQueryParameters(queryString);
         }
     }
 
