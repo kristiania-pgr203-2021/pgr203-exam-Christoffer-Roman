@@ -39,38 +39,16 @@ public class QuestionsController implements Controller {
 
     private HttpResponse get() throws SQLException {
         StringBuilder result = new StringBuilder();
-        if (queryParameters == null) {
-
+        if (queryParameters == null) { // means it is a regular get, so we should get and format all
             List<Question> list = dao.retrieveAll(dao.getRetrieveAllString());
-
             for (var q : list) {
-                result.append("<h3>").append(q.getQuestionTitle()).append("</h3>");
-                result.append("<p>").append(q.getQuestionText()).append("</p>");
-                result.append("<p><a href='/addAnswer.html?id=").append(q.getId())
-                        .append("&questionTitle=").append(q.getQuestionTitle())
-                        .append("&questionText=").append(q.getQuestionText())
-                        .append("&questionType=").append(q.getType().ordinal())
-                        .append("'>Answer question</a></p>");
-                result.append("<p><a href='/allAnswers.html?id=").append(q.getId())
-                        .append("&questionTitle=").append(q.getQuestionTitle())
-                        .append("&questionText=").append(q.getQuestionText())
-                        .append("&questionType=").append(q.getType().ordinal())
-                        .append("'>See all answers</a></p>");
-                result.append("<p><a href='/editQuestion.html?id=").append(q.getId())
-                        .append("&questionTitle=").append(q.getQuestionTitle())
-                        .append("&questionText=").append(q.getQuestionText())
-                        .append("&questionType=").append(q.getType().ordinal())
-                        .append("'>Edit question</a></p>");
+                getAllText(result, q);
             }
         } else {
-            if (queryParameters.size() > 1) {
-                result.append("<input id='id' type='hidden' name='id' value='")
-                        .append(queryParameters.get("id"))
-                        .append("'><p><label>Title: <input type='text' name='questionTitle' placeholder='")
-                        .append(queryParameters.get("questionTitle"))
-                        .append("'></label></p><p><label>Question: <input type='text' name='questionText' placeholder='")
-                        .append(queryParameters.get("questionText"))
-                        .append("'></label></p>");
+            if (queryParameters.get("questionType").equals("0")) {
+                getRegular(result);
+            } else if (queryParameters.get("questionType").equals("1")) {
+                getMultiple(result);
             } else {
                 result.append("<input type='hidden' name='questionId' value='")
                         .append(queryParameters.get("questionId"))
@@ -79,6 +57,54 @@ public class QuestionsController implements Controller {
         }
 
         return new HttpResponse(ResponseCode.OK, result.toString(), "text/html");
+    }
+
+    private void getMultiple(StringBuilder result) throws SQLException {
+        getRegular(result);
+        AnswerAlternativeDao alternativeDao = new AnswerAlternativeDao(Main.getDataSource());
+        List<AnswerAlternative> alternatives = alternativeDao.retrieveAllById(
+                Long.parseLong(queryParameters.get("id")),
+                alternativeDao.getRetrieveByIdString());
+        for (int i = 1; i <= alternatives.size(); i++) {
+            result.append("<label>Answer")
+                    .append(i)
+                    .append("</label><input name='answer")
+                    .append(i)
+                    .append("' type='text' placeholder='")
+                    .append(alternatives.get(i - 1).getAnswerText())
+                    .append("'>");
+        }
+
+    }
+
+    private void getRegular(StringBuilder result) {
+        result.append("<input id='id' type='hidden' name='id' value='")
+                .append(queryParameters.get("id"))
+                .append("'><p><label>Title: <input type='text' name='questionTitle' placeholder='")
+                .append(queryParameters.get("questionTitle"))
+                .append("'></label></p><p><label>Question: <input type='text' name='questionText' placeholder='")
+                .append(queryParameters.get("questionText"))
+                .append("'></label></p>");
+    }
+
+    private void getAllText(StringBuilder result, Question q) {
+        result.append("<h3>").append(q.getQuestionTitle()).append("</h3>");
+        result.append("<p>").append(q.getQuestionText()).append("</p>");
+        result.append("<p><a href='/addAnswer.html?id=").append(q.getId())
+                .append("&questionTitle=").append(q.getQuestionTitle())
+                .append("&questionText=").append(q.getQuestionText())
+                .append("&questionType=").append(q.getType().ordinal())
+                .append("'>Answer question</a></p>");
+        result.append("<p><a href='/allAnswers.html?id=").append(q.getId())
+                .append("&questionTitle=").append(q.getQuestionTitle())
+                .append("&questionText=").append(q.getQuestionText())
+                .append("&questionType=").append(q.getType().ordinal())
+                .append("'>See all answers</a></p>");
+        result.append("<p><a href='/editQuestion.html?id=").append(q.getId())
+                .append("&questionTitle=").append(q.getQuestionTitle())
+                .append("&questionText=").append(q.getQuestionText())
+                .append("&questionType=").append(q.getType().ordinal())
+                .append("'>Edit question</a></p>");
     }
 
     private HttpResponse post() throws SQLException {
