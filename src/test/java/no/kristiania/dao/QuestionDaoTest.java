@@ -4,6 +4,8 @@ import no.kristiania.TestData;
 import no.kristiania.dao.model.Question;
 import org.junit.jupiter.api.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class QuestionDaoTest {
@@ -25,7 +27,30 @@ public class QuestionDaoTest {
     }
 
     @Test
-    void shouldUpdateQuestion() throws SQLException {
+    void shouldRetrieveAllQuestions() throws SQLException {
+
+        QuestionDao dao = new QuestionDao(TestData.testDataSource());
+
+        ArrayList<Question> questions = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            Question q = new Question(Integer.toString(i), Integer.toString(i), Question.QuestionType.REGULAR);
+            dao.save(q, dao.getSaveString());
+            questions.add(q);
+        }
+
+        for (Question q : questions) {
+            assertThat(dao.retrieveById(q.getId(), dao.getRetrieveByIdString()))
+                    .hasNoNullFieldsOrProperties()
+                    .usingRecursiveComparison()
+                    .isEqualTo(q);
+        }
+
+        TestData.cleanDataSource(dao.getDataSource());
+    }
+
+    @Test
+    void shouldUpdateRegularQuestion() throws SQLException {
 
         QuestionDao dao = new QuestionDao(TestData.testDataSource());
 
