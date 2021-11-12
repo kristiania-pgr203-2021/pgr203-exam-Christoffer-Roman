@@ -24,18 +24,18 @@ public class HttpWorker implements Runnable {
     @Override
     public void run() {
         try {
-            String[] requestLine = HttpMessage.readLine(socket).split(" ", 3);
+            String requestLine = HttpMessage.readLine(socket);
             headers = HttpMessage.readInputHeaders(socket);
-            HttpMethod method = HttpMethod.valueOf(requestLine[0].toUpperCase());
-            String path = requestLine[1];
-            String queryString = null;
+            HttpMethod method = HttpMethod.valueOf(requestLine.substring(0, requestLine.indexOf(" ")).toUpperCase());
+            String path, queryString = null;
 
             // Checking if path contains queries
-
-            int questionPos = path.indexOf("?");
+            int questionPos = requestLine.indexOf("?");
             if (questionPos != -1) {
-                queryString = path.substring(questionPos + 1);
-                path = path.substring(0, questionPos);
+                queryString = requestLine.substring(questionPos + 1, requestLine.lastIndexOf(" "));
+                path = requestLine.substring(requestLine.indexOf(" ") + 1, questionPos);
+            } else {
+                path = requestLine.split(" ")[1];
             }
             // If no path is specified, just send to /index.html
             if (path.equals("/")) path = "/index.html";
@@ -64,6 +64,8 @@ public class HttpWorker implements Runnable {
                 write(new HttpResponse(ResponseCode.ERROR, ResponseCode.ERROR.toString(), "text/plain"), socket);
             } catch (IOException ex) {
                 System.out.println(e.getMessage());
+            } finally {
+                e.printStackTrace();
             }
         }
     }

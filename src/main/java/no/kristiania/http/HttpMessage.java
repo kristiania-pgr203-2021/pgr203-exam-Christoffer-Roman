@@ -54,4 +54,13 @@ public class HttpMessage {
         }
         return headers;
     }
+
+    public static String encodeToQuery(String unEncoded) {
+        return unEncoded.replaceAll(" ", "+");
+    }
+
+    public static String decodeQuery(String unEncoded) {
+        return unEncoded.replaceAll("\\+", " ");
+    }
+
 }

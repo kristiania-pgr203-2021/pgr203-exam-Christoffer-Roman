@@ -1,22 +1,19 @@
 package no.kristiania.dao;
 
 import no.kristiania.TestData;
+import no.kristiania.dao.model.Question;
 import no.kristiania.http.HttpClient;
 import no.kristiania.http.HttpMethod;
 import no.kristiania.http.HttpRequest;
 import no.kristiania.http.HttpServer;
-import no.kristiania.dao.model.Question;
 import no.kristiania.http.controllers.FileController;
 import no.kristiania.http.controllers.QuestionsController;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class QuestionDaoTest {
