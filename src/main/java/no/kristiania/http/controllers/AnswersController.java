@@ -7,7 +7,6 @@ import no.kristiania.http.HttpRequest;
 import no.kristiania.http.HttpResponse;
 import no.kristiania.http.ResponseCode;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -26,15 +25,15 @@ public class AnswersController implements Controller {
     public HttpResponse handle(HttpRequest request) throws SQLException {
 
         if (request.getMethod().equals(HttpMethod.GET)) {
-            return get(request);
+            return get();
         } else if (request.getMethod().equals(HttpMethod.POST)) {
-            return post(request);
+            return post();
         }
 
         return new HttpResponse(ResponseCode.METHOD_NOT_ALLOWED, "Method Not Allowed", "text/plain");
     }
 
-    private HttpResponse get(HttpRequest request) throws SQLException {
+    private HttpResponse get() throws SQLException {
 
         List<Answer> list = dao.retrieveByQuestionId(Long.parseLong(queryParameters.get("id")), dao.getRetrieveByIdString());
 
@@ -50,7 +49,7 @@ public class AnswersController implements Controller {
         return new HttpResponse(ResponseCode.OK, result.toString(), "text/html");
     }
 
-    private HttpResponse post(HttpRequest request) throws SQLException {
+    private HttpResponse post() throws SQLException {
 
         Answer a  = new Answer(queryParameters.get("answerText"), Long.parseLong(queryParameters.get("questionId")));
         dao.save(a, dao.getSaveString());

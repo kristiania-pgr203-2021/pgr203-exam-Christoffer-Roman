@@ -20,21 +20,18 @@ public class QuestionsController implements Controller {
 
     @Override
     public HttpResponse handle(HttpRequest request) throws SQLException {
-
         if (request.getMethod().equals(HttpMethod.GET)) {
-            return get(request);
+            return get();
         } else if (request.getMethod().equals(HttpMethod.POST)) {
-            if (queryParameters.get("dbAction").equals("update")) return patch(request);
-            return post(request);
+            if (queryParameters.get("dbAction").equals("update")) return patch();
+            return post();
         }
 
         return new HttpResponse(ResponseCode.METHOD_NOT_ALLOWED, "Method Not Allowed", "text/plain");
     }
 
-    private HttpResponse get(HttpRequest request) throws SQLException {
-
+    private HttpResponse get() throws SQLException {
         StringBuilder result = new StringBuilder();
-
         if (queryParameters == null) {
 
             List<Question> list = dao.retrieveAll(dao.getRetrieveAllString());
@@ -65,8 +62,7 @@ public class QuestionsController implements Controller {
                         .append(queryParameters.get("questionText"))
                         .append("'></label></p>");
             } else {
-                result
-                        .append("<input type='hidden' name='questionId' value='")
+                result.append("<input type='hidden' name='questionId' value='")
                         .append(queryParameters.get("questionId"))
                         .append("'>");
             }
@@ -75,7 +71,7 @@ public class QuestionsController implements Controller {
         return new HttpResponse(ResponseCode.OK, result.toString(), "text/html");
     }
 
-    private HttpResponse post(HttpRequest request) throws SQLException {
+    private HttpResponse post() throws SQLException {
 
         Question q = new Question(queryParameters.get("questionTitle"), queryParameters.get("questionText"));
         dao.save(q, dao.getSaveString());
@@ -85,7 +81,7 @@ public class QuestionsController implements Controller {
         return response;
     }
 
-    private HttpResponse patch(HttpRequest request) throws SQLException {
+    private HttpResponse patch() throws SQLException {
 
         Question fromDb = dao.retrieveById(Long.parseLong(queryParameters.get("id")), dao.getRetrieveByIdString());
         String questionTitle = queryParameters.get("questionTitle");
@@ -105,7 +101,6 @@ public class QuestionsController implements Controller {
     }
 
     public void setQueryParameters(String queryString) {
-        queryParameters = null; // Clearing if there was old queryParameters
         queryParameters = HttpRequest.parseQueryParameters(queryString);
     }
 }
