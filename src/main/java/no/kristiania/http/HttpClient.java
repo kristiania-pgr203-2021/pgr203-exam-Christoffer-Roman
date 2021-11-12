@@ -18,7 +18,7 @@ public class HttpClient {
         this.host = host;
         this.port = port;
         this.socket = new Socket(host, port);
-        executeGetRequest(host, target);
+        executeGetRequest(target);
     }
     public HttpClient(String host, int port, String target, HttpMethod method, String requestBody) throws IOException {
         this.socket = new Socket(host, port);
@@ -26,13 +26,13 @@ public class HttpClient {
         this.port = port;
         this.requestBody = requestBody;
         if (method.equals(HttpMethod.POST)) {
-            executePostRequest(host, target);
+            executePostRequest(target);
         } else {
-            executeGetRequest(host, target);
+            executeGetRequest(target);
         }
     }
 
-    private void executePostRequest(String host, String target) throws IOException {
+    private void executePostRequest(String target) throws IOException {
         String request =
                 "POST " + target + " HTTP/1.1\r\n" +
                         "Host: " + host + "\r\n" +
@@ -47,7 +47,7 @@ public class HttpClient {
         readResponse();
     }
 
-    private void executeGetRequest(String host, String target) throws IOException {
+    private void executeGetRequest(String target) throws IOException {
 
         String request =
                 "GET " + target + " HTTP/1.1\r\n" +
@@ -75,7 +75,7 @@ public class HttpClient {
 
         if (responseCode == 303) {
             socket = new Socket(host, port);
-            executeGetRequest(host, headerFields.get("Location"));
+            executeGetRequest(headerFields.get("Location"));
         }
     }
 
