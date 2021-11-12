@@ -7,3 +7,6 @@ div{
 #multipleAnswers, #scale{
     display: none;
 }
+html {
+    background-color: #AAF797;
+}
