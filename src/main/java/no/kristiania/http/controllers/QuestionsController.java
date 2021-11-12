@@ -1,8 +1,8 @@
 package no.kristiania.http.controllers;
 
 import no.kristiania.dao.QuestionDao;
-import no.kristiania.dao.model.Question;
 import no.kristiania.http.*;
+import no.kristiania.dao.model.Question;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -51,8 +51,8 @@ public class QuestionsController implements Controller {
                         .append("&questionText=").append(q.getQuestionText())
                         .append("'>See all answers</a></p>");
                 result.append("<p><a href='/editQuestion.html?id=").append(q.getId())
-                        .append("&questionTitle=").append(HttpMessage.encodeToQuery(q.getQuestionTitle()))
-                        .append("&questionText=").append(HttpMessage.encodeToQuery(q.getQuestionText()))
+                        .append("&questionTitle=").append(q.getQuestionTitle())
+                        .append("&questionText=").append(q.getQuestionText())
                         .append("'>Edit question</a></p>");
             }
         } else {
@@ -60,9 +60,9 @@ public class QuestionsController implements Controller {
                 result.append("<input id='id' type='hidden' name='id' value='")
                         .append(queryParameters.get("id"))
                         .append("'><p><label>Title: <input type='text' name='questionTitle' placeholder='")
-                        .append(HttpMessage.decodeQuery(queryParameters.get("questionTitle")))
+                        .append(queryParameters.get("questionTitle"))
                         .append("'></label></p><p><label>Question: <input type='text' name='questionText' placeholder='")
-                        .append(HttpMessage.decodeQuery(queryParameters.get("questionText")))
+                        .append(queryParameters.get("questionText"))
                         .append("'></label></p>");
             } else {
                 result
