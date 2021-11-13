@@ -32,6 +32,9 @@ public class QuestionsController implements Controller {
                 return patch();
             if (queryParameters.get("dbAction").equals("multipleAnswers"))
                 return postMultipleAnswers();
+            if (queryParameters.get("dbAction").equals("scale")) {
+                return postScale();
+            }
             return post();
         }
 
@@ -48,7 +51,7 @@ public class QuestionsController implements Controller {
             }
             Main.logger.info("All questions returned to client");
         } else {
-            if (queryParameters.get("questionType").equals("0")) {
+            if (queryParameters.get("questionType").equals("0") || queryParameters.get("questionType").equals("2")) {
                 getRegular(result);
             } else if (queryParameters.get("questionType").equals("1")) {
                 getMultiple(result);
@@ -111,7 +114,10 @@ public class QuestionsController implements Controller {
     }
 
     private HttpResponse post() throws SQLException {
-        Question q = new Question(queryParameters.get("questionTitle"), queryParameters.get("questionText"));
+        Question q = new Question(
+                queryParameters.get("questionTitle"),
+                queryParameters.get("questionText")
+        );
         dao.save(q, dao.getSaveString());
 
         return redirectResponse("/allQuestions.html");
@@ -119,8 +125,11 @@ public class QuestionsController implements Controller {
 
 
     private HttpResponse postMultipleAnswers() throws SQLException {
-        Question question = new Question(queryParameters.get("questionTitle"),
-                queryParameters.get("questionText"), Question.QuestionType.MULTIPLE_ANSWERS);
+        Question question = new Question(
+                queryParameters.get("questionTitle"),
+                queryParameters.get("questionText"),
+                Question.QuestionType.MULTIPLE_ANSWERS
+        );
         dao.save(question, dao.getSaveString());
 
         for (Map.Entry<String, String> entry : queryParameters.entrySet()) {
@@ -129,6 +138,18 @@ public class QuestionsController implements Controller {
                 alternativeDao.save(answerAlternative, alternativeDao.saveString);
             }
         }
+
+        Main.logger.info("Question saved, redirecting client");
+        return redirectResponse("/allQuestions.html");
+    }
+
+    private HttpResponse postScale() throws SQLException {
+        Question question = new Question(
+                queryParameters.get("questionTitle"),
+                queryParameters.get("questionText"),
+                Question.QuestionType.SCALE
+        );
+        dao.save(question, dao.getSaveString());
 
         Main.logger.info("Question saved, redirecting client");
         return redirectResponse("/allQuestions.html");

@@ -41,6 +41,14 @@
         regular.style.display = "none";
         multipleAnswers.style.display = "block";
         retrieveOptions();
+    } else if (questionType == "2") {
+        regular.style.display = "none";
+        multipleAnswers.style.display = "block";
+        for (i = 0; i <= 5; i++) {
+            multipleAnswers.innerHTML += `
+                <option value="${i}">${i}</option>
+            `;
+        }
     }
 
     function retrieveOptions() {
