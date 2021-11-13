@@ -1,6 +1,18 @@
 [![Java CI with Maven](https://github.com/kristiania-pgr203-2021/pgr203-exam-Christoffer-Roman/actions/workflows/maven.yml/badge.svg)](https://github.com/kristiania-pgr203-2021/pgr203-exam-Christoffer-Roman/actions/workflows/maven.yml)
 # PGR203 Avansert Java eksamen
 
+## Linker til relevante repositories:
+### Tidligere arbeidskrav (som vi hentet noe kode fra)
+* https://github.com/kristiania-pgr203-2021/pgr203-innlevering-3-Generoman
+* https://github.com/kristiania-pgr203-2021/pgr203-Innlevering-2
+### Code Review partnere sitt repository:
+* Vi fikk ikke direkte tilgang til repositoryet, men fikk hjelp til å hente inn query parameters fra URL via JavaScript med dette kodeeksempelet:
+  ```
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const questionId = urlSearchParams.get("questionId");
+    ```
+ * Denne hjelpen fikk vi av Marie Stigen og Christian Gregersen
+
 
 ## Beskriv hvordan programmet skal testes:
 
@@ -29,6 +41,41 @@
 
 * Et noe forenklet sekvensdiagram av hvordan et spørsmål legges til:
 ![Sekvensdiagram](https://user-images.githubusercontent.com/53780885/141655841-47304e2c-9657-493d-be95-3d0d0a087358.png)
+
+### Overordnet
+* Server starter på egen tråd (Main.main()), oppretter controllers for alle mulige paths, venter på request
+* HttpWorker-objekt opprettes for hver innkommende request og kjører på ny tråd
+* HttpWorker tar imot outputStream fra klient, gjør det om til et HttpRequest-objekt
+* HttpWorker sender HttpRequest videre til relevant Controller
+  * Hvis path i HttpRequest peker til en HTML-fil:
+    * FileController returnerer et HttpResponse-objekt med filen som body
+  * Hvis path i HttpRequest peker til et API:
+    * Controller sjekker om det er en POST- eller GET-request, og lagrer/oppdaterer eller henter informasjon fra database via tilhørende Dao-objekt
+* HttpWorker får et HttpResponse-objekt fra Controller, og sender det i inputStream til klienten
+
+### QuestionsController
+* Vi har valgt å beskrive denne fordi det er den mest kompliserte Controller-klassen vi har; de andre følger stort sett samme oppsett, bare enklere
+* QuestionsController får inn et HttpRequest-objekt fra HttpWorker
+  * Hvis metoden i HttpRequest er GET:
+    * Sjekker antall query parameters (hentes fra URL):
+      * Hvis det er ingen:
+        * Returnerer HTML med alle spørsmål i databasen (via QuestionDao) i message body i et HttpResponse-objekt. Brukes til å se alle spørsmål
+      * Hvis det er mer enn én:
+        * Returner HTML med input-felt for et spesifikt spørsmål i databasen (via QuestionDao) i message body i et HttpResponse-objekt. Brukes til å endre et spørsmål
+      * Hvis det bare er én:
+        * Returnerer HTML med et skjult input-felt som inneholder id for det relevante spørsmålet i databasen (via QuestionDao) i message body i et HttpResponse-objekt. Brukes til å knytte et svar til en spørsmål
+    * Hvis metoden i HttpRequest er POST:
+      * Sjekker hva query parameter “dbAction” er (bestemt av form i HTML-fil)
+        * Hvis den er “save”:
+          * Kjører post()-metoden, som lagrer et spørsmål i databasen (via QuestionDao) ved hjelp av query parameters, og returnerer et HttpResponse-objekt med kode 303, som redirecter til listen over alle spørsmål
+        * Hvis den er "update":
+          * Kjører patch()-metoden, som endrer et spørsmål i databasen (via QuestionDao) ved hjelp av query parameters, og returnerer et HttpResponse-objekt med kode 303, som redirecter til listen over alle spørsmål.
+        * Hvis den er “multipleAnswers”:
+          * Kjører postMultipleAnswers()-metoden, som lagrer spørsmålet og tilhørende svaralternativ i databasen (via QuestionDao) ved hjelp av query parameters, og returnerer et HttpResponse-objekt med kode 303, som redirecter til listen over alle spørsmål
+        * Hvis den er “scale”:
+          * Kjører postScale()-metoden, som lagrer spørsmålet i databasen med tilhørende svartype (skala 0-5) (via QuestionDao) ved hjelp av query parameters, og returnerer et HttpResponse-objekt med kode 303, som redirecter til listen over alle spørsmål
+    * Hvis metoden er noe annet enn GET eller POST:
+      * Returnerer et HttpResponse-objekt med kode 405
 
 ## Dokumentasjon av prosess
 
