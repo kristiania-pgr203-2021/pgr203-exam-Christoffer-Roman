@@ -5,17 +5,13 @@ import no.kristiania.dao.model.Answer;
 import no.kristiania.dao.model.Question;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-// Only working without questionType
 public class AnswerDaoTest {
 
-    // TODO: write tests
-
     @Test
-    void shouldAddAndRetrieveQuestion() throws SQLException {
+    void shouldAddAndRetrieveAnswer() throws SQLException {
 
         QuestionDao questionDao = new QuestionDao(TestData.testDataSource());
         AnswerDao answerDao = new AnswerDao(TestData.testDataSource());
@@ -43,19 +39,21 @@ public class AnswerDaoTest {
         Question question = new Question("Kjæledyr", "Hvor mange kjæledyr har du hatt?", Question.QuestionType.REGULAR);
         questionDao.save(question, questionDao.getSaveString());
 
-        ArrayList<Answer> answers = new ArrayList<>();
+        ArrayList<Answer> savedAnswers = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
             Answer a = new Answer(Integer.toString(i), question.getId());
             answerDao.save(a, answerDao.getSaveString());
-            answers.add(a);
+            savedAnswers.add(a);
         }
 
-        for (Answer a : answers) {
-            assertThat(answerDao.retrieveById(question.getId(), answerDao.getRetrieveByQuestionIdString()))
+        ArrayList<Answer> retrievedAnswers = (ArrayList<Answer>) answerDao.retrieveByQuestionId(question.getId(), answerDao.getRetrieveByQuestionIdString());
+
+        for (int i = 0; i < 10; i++) {
+            assertThat(retrievedAnswers.get(i))
                     .hasNoNullFieldsOrProperties()
                     .usingRecursiveComparison()
-                    .isEqualTo(a);
+                    .isEqualTo(savedAnswers.get(i));
         }
 
         TestData.cleanDataSource(questionDao.getDataSource());

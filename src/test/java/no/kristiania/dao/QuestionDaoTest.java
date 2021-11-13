@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class QuestionDaoTest {
 
     @Test
-    void shouldAddAndReturnQuestion() throws SQLException {
+    void shouldAddAndReturnRegularQuestion() throws SQLException {
 
         QuestionDao dao = new QuestionDao(TestData.testDataSource());
 
@@ -33,11 +33,17 @@ public class QuestionDaoTest {
 
         ArrayList<Question> questions = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
-            Question q = new Question(Integer.toString(i), Integer.toString(i), Question.QuestionType.REGULAR);
-            dao.save(q, dao.getSaveString());
-            questions.add(q);
-        }
+        Question qReg = new Question("RegTest", "Er dette en tekst?", Question.QuestionType.REGULAR);
+        dao.save(qReg, dao.getSaveString());
+        questions.add(qReg);
+
+        Question qSca = new Question("ScaTest", "Er dette en skala?", Question.QuestionType.SCALE);
+        dao.save(qSca, dao.getSaveString());
+        questions.add(qSca);
+
+        Question qMul = new Question("MulTest", "Er dette svaralternativer?", Question.QuestionType.MULTIPLE_ANSWERS);
+        dao.save(qMul, dao.getSaveString());
+        questions.add(qMul);
 
         for (Question q : questions) {
             assertThat(dao.retrieveById(q.getId(), dao.getRetrieveByQuestionIdString()))
@@ -50,7 +56,7 @@ public class QuestionDaoTest {
     }
 
     @Test
-    void shouldUpdateRegularQuestion() throws SQLException {
+    void shouldUpdateQuestion() throws SQLException {
 
         QuestionDao dao = new QuestionDao(TestData.testDataSource());
 
@@ -61,7 +67,6 @@ public class QuestionDaoTest {
         updatedQuestion.setId(savedQuestion.getId());
         dao.update(updatedQuestion, dao.getUpdateString());
 
-        // TODO: Does not take question type into account! QuestionDao.updateString must be changed!
         assertThat(dao.retrieveById(updatedQuestion.getId(), dao.getRetrieveByQuestionIdString()))
                 .hasNoNullFieldsOrProperties()
                 .usingRecursiveComparison()
