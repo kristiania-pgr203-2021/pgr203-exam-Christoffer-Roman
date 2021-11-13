@@ -1,5 +1,5 @@
 create table answer_alternatives (
-    id serial,
+    id serial primary key,
     answer varchar(100) not null,
     question_id int not null,
     constraint answer_alternatives_fk

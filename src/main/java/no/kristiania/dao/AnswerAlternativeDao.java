@@ -9,8 +9,6 @@ import java.sql.SQLException;
 
 public class AnswerAlternativeDao extends AbstractDao<AnswerAlternative> {
 
-    // TODO: possibly remove class
-
     public final String saveString = "insert into answer_alternatives(answer, question_id) values (?, ?)";
     public final String retrieveByQuestionIdString = "select * from answer_alternatives where question_id = ?";
     public final String retrieveByIdString = "select * from answer_alternatives where id = ?";
