@@ -17,7 +17,7 @@ public class QuestionsControllerTest {
     HttpServer server = new HttpServer();
 
     @Test
-    void shouldAddAndReturnQuestionViaPostRequest() throws SQLException {
+    void shouldAddQuestionViaPostRequest() throws SQLException {
 
         QuestionDao dao = new QuestionDao(TestData.testDataSource());
 
@@ -68,7 +68,6 @@ public class QuestionsControllerTest {
 
         Question retrievedQuestion = dao.retrieveById(expectedQuestion.getId(), dao.getRetrieveByQuestionIdString());
 
-        // TODO: Does not take question type into account! QuestionDao.updateString must be changed and QuestionsController refactored!
         assertThat(retrievedQuestion)
                 .isEqualTo(expectedQuestion)
                 .hasNoNullFieldsOrProperties()

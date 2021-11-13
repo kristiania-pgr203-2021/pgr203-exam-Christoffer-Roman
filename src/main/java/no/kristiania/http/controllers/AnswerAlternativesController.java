@@ -26,14 +26,8 @@ public class AnswerAlternativesController implements Controller{
     public HttpResponse handle(HttpRequest request) throws SQLException {
         if (request.getMethod().equals(HttpMethod.GET)) {
             return get();
-        } else if (request.getMethod().equals(HttpMethod.POST)) {
-            return post();
         }
         return new HttpResponse(ResponseCode.ERROR, ResponseCode.ERROR.toString(), "text/plain");
-    }
-
-    private HttpResponse post() {
-        return null;
     }
 
     private HttpResponse get() throws SQLException {
