@@ -28,9 +28,11 @@ public class FileController implements Controller {
             fileResource.transferTo(buffer);
             String responseMessage = buffer.toString();
             String contentType = HttpMessage.getContentType(request.getPath());
+            Main.logger.info("Responding with file " + request.getPath());
             return new HttpResponse(ResponseCode.OK, responseMessage, contentType);
         }
-        Main.logger.info("Responding with file " + request.getPath());
+
+        Main.logger.info("Error with file, responding with 500");
         return new HttpResponse(ResponseCode.ERROR, ResponseCode.ERROR.toString(), "text/plain");
     }
 }

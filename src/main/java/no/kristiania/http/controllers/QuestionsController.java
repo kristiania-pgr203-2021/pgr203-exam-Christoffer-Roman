@@ -35,6 +35,7 @@ public class QuestionsController implements Controller {
             return post();
         }
 
+        Main.logger.info("Client request method not allowed, returning 405");
         return new HttpResponse(ResponseCode.METHOD_NOT_ALLOWED, "Method Not Allowed", "text/plain");
     }
 
@@ -44,8 +45,8 @@ public class QuestionsController implements Controller {
             List<Question> list = dao.retrieveAll(dao.getRetrieveAllString());
             for (var q : list) {
                 getAllText(result, q);
-                Main.logger.info("All questions returned to client");
             }
+            Main.logger.info("All questions returned to client");
         } else {
             if (queryParameters.get("questionType").equals("0")) {
                 getRegular(result);
@@ -59,7 +60,6 @@ public class QuestionsController implements Controller {
             Main.logger.info("One question returned to client");
         }
 
-        Main.logger.info("Client request method not allowed, returning 405");
         return new HttpResponse(ResponseCode.OK, result.toString(), "text/html");
     }
 
