@@ -1,5 +1,6 @@
 package no.kristiania.http.controllers;
 
+import no.kristiania.Main;
 import no.kristiania.dao.AnswerAlternativeDao;
 import no.kristiania.dao.model.AnswerAlternative;
 import no.kristiania.http.HttpMethod;
@@ -51,6 +52,7 @@ public class AnswerAlternativesController implements Controller{
                     result.append(alternatives.get(i).getAnswerText())
                     .append("</option>");
         }
+        Main.logger.info("Returning all answer alternatives to client");
         return new HttpResponse(ResponseCode.OK, result.toString(), "text/html");
     }
 

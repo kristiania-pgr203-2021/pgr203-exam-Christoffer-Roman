@@ -1,5 +1,6 @@
 package no.kristiania.http.controllers;
 
+import no.kristiania.Main;
 import no.kristiania.dao.AnswerDao;
 import no.kristiania.dao.model.Answer;
 import no.kristiania.http.HttpMethod;
@@ -25,11 +26,14 @@ public class AnswersController implements Controller {
     public HttpResponse handle(HttpRequest request) throws SQLException {
 
         if (request.getMethod().equals(HttpMethod.GET)) {
+            Main.logger.info("Answers returned to client");
             return get();
         } else if (request.getMethod().equals(HttpMethod.POST)) {
+            Main.logger.info("Answer saved, redirecting client");
             return post();
         }
 
+        Main.logger.info("Client request method not allowed, returning 405");
         return new HttpResponse(ResponseCode.METHOD_NOT_ALLOWED, "Method Not Allowed", "text/plain");
     }
 

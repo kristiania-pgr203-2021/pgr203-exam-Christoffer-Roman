@@ -1,5 +1,6 @@
 package no.kristiania.http;
 
+import no.kristiania.Main;
 import no.kristiania.http.controllers.AnswerAlternativesController;
 import no.kristiania.http.controllers.AnswersController;
 import no.kristiania.http.controllers.Controller;
@@ -51,6 +52,7 @@ public class HttpWorker implements Runnable {
                 HttpResponse httpResponse = controller.handle(new HttpRequest(method, path));
                 write(httpResponse, socket);
             } else {
+                Main.logger.info("Client request path not found, returning 404");
                 write(new HttpResponse(ResponseCode.NOT_FOUND, ResponseCode.NOT_FOUND.toString(), "text/plain"), socket);
             }
 

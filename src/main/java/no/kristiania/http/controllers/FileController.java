@@ -1,5 +1,6 @@
 package no.kristiania.http.controllers;
 
+import no.kristiania.Main;
 import no.kristiania.http.HttpMessage;
 import no.kristiania.http.HttpRequest;
 import no.kristiania.http.HttpResponse;
@@ -29,6 +30,7 @@ public class FileController implements Controller {
             String contentType = HttpMessage.getContentType(request.getPath());
             return new HttpResponse(ResponseCode.OK, responseMessage, contentType);
         }
+        Main.logger.info("Responding with file " + request.getPath());
         return new HttpResponse(ResponseCode.ERROR, ResponseCode.ERROR.toString(), "text/plain");
     }
 }

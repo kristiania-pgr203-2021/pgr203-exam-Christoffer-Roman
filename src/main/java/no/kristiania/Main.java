@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class Main {
-    private static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
+    public static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
     private static DataSource dataSource;
     public static void main(String[] args) throws IOException {
         HttpServer server = new HttpServer(8008);
