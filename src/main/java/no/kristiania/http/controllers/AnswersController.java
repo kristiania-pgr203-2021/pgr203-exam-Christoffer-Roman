@@ -26,7 +26,7 @@ public class AnswersController implements Controller {
     public HttpResponse handle(HttpRequest request) throws SQLException {
 
         if (request.getMethod().equals(HttpMethod.GET)) {
-            Main.logger.info("Answers returned to client");
+            Main.logger.info("All answers to one question returned to client");
             return get();
         } else if (request.getMethod().equals(HttpMethod.POST)) {
             Main.logger.info("Answer saved, redirecting client");

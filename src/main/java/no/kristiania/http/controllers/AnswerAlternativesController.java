@@ -52,7 +52,7 @@ public class AnswerAlternativesController implements Controller{
                     result.append(alternatives.get(i).getAnswerText())
                     .append("</option>");
         }
-        Main.logger.info("Returning all answer alternatives to client");
+        Main.logger.info("All answer alternatives returned to client");
         return new HttpResponse(ResponseCode.OK, result.toString(), "text/html");
     }
 
