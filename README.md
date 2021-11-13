@@ -4,16 +4,35 @@
 
 ## Beskriv hvordan programmet skal testes:
 
-## Korreksjoner av eksamensteksten i Wiseflow:
+### Testing
+* Når serveren kjører, gå til `localhost:8008` i nettleseren, og test følgende:
+  * Legg til flere spørsmål av ulike typer
+  * Se alle spørsmål
+  * Endre flere spørsmål av ulike typer
+  * Svar på ett eller flere spørsmål av ulike typer
+  * Se alle svar på ett eller flere spørsmål
 
-**DET ER EN FEIL I EKSEMPELKODEN I WISEFLOW:**
-
-* I `addOptions.html` skulle url til `/api/tasks` vært `/api/alternativeAnswers` (eller noe sånt)
-
-**Det er viktig å være klar over at eksempel HTML i eksamensoppgaven kun er til illustrasjon. Eksemplene er ikke tilstrekkelig for å løse alle ekstraoppgavene og kandidatene må endre HTML-en for å være tilpasset sin besvarelse**
 
 
-## Sjekkliste
+## Dokumentasjon av bygging og kjøring via CMD
+* Bytt directory til pgr203-exam-Christoffer-Roman
+* Kjør `mvn package`
+* Jar-filen vil ligge i target. Denne kan nå flyttes hvor som helst
+* Opprett pgr203.properties med dette innholdet:
+  * `dataSource.url=[din database-url]`
+  * `dataSource.username=[ditt brukernavn]` - Merk at vi har brukt `username`, og ikke `user`
+  * `datasource.password=[ditt passord]`
+* Legg `pgr203.properties` i samme directory som jar-filen
+* Kjør `java -jar pgr203-exam-Christoffer-Roman.jar`
+
+## Dokumentasjon av kode
+
+* Et noe forenklet sekvensdiagram av hvordan et spørsmål legges til:
+![sekvensdiagram](https://drive.google.com/file/d/1YX0jwEs0Fj8nMHDmCerFtm_dS943d6Gm/view)
+
+## Dokumentasjon av prosess
+
+
 
 ## Vedlegg: Sjekkliste for innlevering
 
@@ -25,14 +44,14 @@
 ### README.md
 
 * [x] `README.md` inneholder en korrekt link til Github Actions
-* [ ] `README.md` beskriver prosjektets funksjonalitet, hvordan man bygger det og hvordan man kjører det
+* [x] `README.md` beskriver prosjektets funksjonalitet, hvordan man bygger det og hvordan man kjører det
 * [x] `README.md` beskriver eventuell ekstra leveranse utover minimum
 * [x] `README.md` inneholder et diagram som viser datamodellen
 
 ### Koden
 
 * [x] `mvn package` bygger en executable jar-fil
-* [ ] Koden inneholder et godt sett med tester
+* [x] Koden inneholder et godt sett med tester
 * [x] `java -jar target/...jar` (etter `mvn package`) lar bruker legge til og liste ut data fra databasen via webgrensesnitt
 * [x] Serveren leser HTML-filer fra JAR-filen slik at den ikke er avhengig av å kjøre i samme directory som kildekoden
 * [x] Programmet leser `dataSource.url`, `dataSource.username` og `dataSource.password` fra `pgr203.properties` for å connecte til databasen

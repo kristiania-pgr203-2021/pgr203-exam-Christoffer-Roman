@@ -3,3 +3,4 @@
 target/
 /db_password.txt
 /pgr203.properties
+/dependency-reduced-pom.xml
