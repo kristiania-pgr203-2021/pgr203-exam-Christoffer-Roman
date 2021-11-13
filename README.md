@@ -79,6 +79,56 @@
 
 ## Dokumentasjon av prosess
 
+### Forberedelser
+
+Det første vi gjorde var å bli enige om hvilke ekstraoppgaver vi skulle fokusere på. Slått sammen med listen over minimumskrav for C, ble dette en liste over krav til et personlig MVP (Minimum Viable Product). Deretter så vi også på ekstraoppgaver som vi så for oss kunne bli interessant å prøve seg på, og satt disse litt til siden på en egen liste (NTH - Nice To Have). Denne skulle vi komme tilbake til om vi fikk tid.
+
+Hva som var minimumskrav (og ekstraoppgaver) var noe vanskelig å avgjøre, da vi hadde to lignende, men forskjellige oppgavesett å forholde oss til - ett i README-filen vi fikk i GitHub-repositoryet, og ett i PDF-filen som lå på WiseFlow.
+
+#### MVP-listen:
+* Alle minimumskrav for C
+* Bruk av FileController
+* Riktig content-type på CSS
+* `localhost:port` (porten vi bruker er 8008) leder til index.html
+* UTF-enkoding for bruk av æ, ø, og å
+* Sekvensdiagram i README.md
+
+#### NTH-listen:
+* Cookies
+* Chunked Transfer Encoding
+* Klassediagram i README.md
+* RESTful API
+
+
+### Gjennomføring
+
+Vi endte opp med å gjenbruke mye av koden for arbeidskrav 1 og 2, siden vi jobbet sammen under disse. Denne ble selvfølgelig endret for å tilpasses eksamensoppgaven.
+
+Noe av det første vi gjorde var å sette opp Github Actions, en `dev`-branch, og `pom.xml` for å unngå å bruke opp Actions-minuttene og “vondt i maven” senere. Her ble det noen problemer med IntelliJ, som ikke ville hente inn enkelte plugins og dependencies. Det ble litt “vondt i maven” likevel, men vi fant heldigvis en fiks for dette.
+
+Utfordringen i å kode sammen med noen andre ble tydelig da vi jobbet hver for oss. Hvis man pullet en stor endring i koden, måtte man gjerne bruke litt tid til å sette seg inn i funksjonaliteten og logikken før man kunne fortsette der den andre slapp. På grunn av dette så vi oss etterhvert nødt til å kommunisere mer, og endret arbeidsmetoden deretter.
+
+Vi fokuserte ikke på “klassisk” parprogrammering, men jobbet sammen gjennom Discord, enten via tekst- eller voicechat. Utfordringer i arbeidet var straks mye lettere å løse når man hadde et ekstra par øyne, og det ble mye lettere å forstå hva den andre hadde gjort når man kunne få forklaring på ting umiddelbart.
+
+Siden det var mye fokus på Java i løpet av semesteret, var det noe overraskende at såpass mange ting som var nye for oss i JavaScript var nødvendig for besvarelsen. En del halvveis glemt kunnskap fra første og andre semester måtte også oppfriskes, men dette opplevdes ikke som problematisk.
+
+Unit-testing ble nok litt forsømt under de to første tredjedelene av arbeidet. Vi hadde en tendens til å bli hyperfokusert på å få funksjonaliteten på plass, og sjekket om ting fungerte gjennom brukertesting underveis. Dette ble vi selv oppmerksom på etterhvert, og skrev da nødvendige tester.
+
+
+### Utfordringer
+
+Annet enn ytre faktorer (som en annen eksamen, og det å være påvirket av mørketid), var det spesielt et par ting som fungerte som hindere for oss. Den største av disse var kanskje innhenting av data fra databasen gjennom query parameters i URL. Tanken var at når bruker f.eks. skal svare på et spørsmål, må `answerQuestion.html` både hente inn informasjon om spørsmålet som skal besvares, og kunne legge til svaret i databasen. Vi fikk heldigvis tips fra gruppa vi tidligere hadde samhandlet med under arbeidskravene om at query parameters fra URL kunne hentes inn via JavaScript. Deretter ble den delen av besvarelsen løst veldig kjapt.
+
+På grunn av hyperfokuseringen nevnt tidligere, ble vi også nødt til å gjøre en del refactoring da vi oppdaget at en av minimumskravene for C manglet. Vi hadde gjort mye jobb i `QuestionController` som måtte endres så snart vi skulle legge funksjonalitet for å opprette spørsmål med svaralternativ.
+
+Generelt sett, føler vi også at noen av svakhetene i objektorientert programmering kommer frem i en praktisk oppgave som dette. Å dele funksjonalitet opp i mange klasser gjorde ting mindre oversiktlig i enkelte tilfeller. Det var også en del vanskeligere å søke seg frem til løsninger på problemer på nett enn hva vi er vant til. Det virker som man i de fleste tilfeller ikke ville brukt Java på denne måten for å bygge en server fra scratch. De fleste svar vi fant brukte etablerte biblioteker, eller andre språk enn Java.
+
+
+### Resultat
+
+Slik vi tolket minimumskravene til C, oppfylte vi alle krav i vår MVP-liste. I NTH-listen rakk vi bare å få til RESTful API. Det er mulig at vi kunne fulgt Single Responsibility Principle bedre for `QuestionsController`, men da dette emnet ikke fokuserte så mye på det, valgte vi å ikke ta det med i besvarelsen. Oppgaveteksten i PDF-filen refererte også til spørreundersøkelse som en mulig overordnet tabell til spørsmål. Vi har heller ikke tatt dette med, da vi føler vi har vist i `QuestionsController` og `AnswersController` at vi kunne fått det til.
+
+Vi er fornøyde med egen besvarelse, og etter det som nå har blitt mange dager med overtidsarbeid, skal det bli godt å gå over til overtidsarbeid i andre eksamener.
 
 
 ## Vedlegg: Sjekkliste for innlevering
@@ -128,4 +178,4 @@
 * [ ] JDBC koden fra forelesningen har en feil ved retrieve dersom id ikke finnes. Kan dere rette denne?
 * [x] I forelesningen fikk vi en rar feil med CSS når vi hadde `<!DOCTYPE html>`. Grunnen til det er feil content-type. Klarer dere å fikse det slik at det fungerer å ha `<!DOCTYPE html>` på starten av alle HTML-filer?
 * [ ] Klarer dere å lage en Coverage-rapport med GitHub Actions med Coveralls? (Advarsel: Foreleser har nylig opplevd feil med Coveralls så det er ikke sikkert dere får det til å virke)
-* [ ] FARLIG: I løpet av kurset har HttpServer og tester fått funksjonalitet som ikke lenger er nødvendig. Klarer dere å fjerne alt som er overflødig nå uten å også fjerne kode som fortsatt har verdi? (Advarsel: Denne kan trekke ned dersom dere gjør det feil!)
+* [x] FARLIG: I løpet av kurset har HttpServer og tester fått funksjonalitet som ikke lenger er nødvendig. Klarer dere å fjerne alt som er overflødig nå uten å også fjerne kode som fortsatt har verdi? (Advarsel: Denne kan trekke ned dersom dere gjør det feil!)
