@@ -31,6 +31,7 @@ public class AnswerAlternativeDao extends AbstractDao<AnswerAlternative> {
 
     @Override
     public String getRetrieveAllString() {
+        // NEVER USED
         return retrieveAllString;
     }
 

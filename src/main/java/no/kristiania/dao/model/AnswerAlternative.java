@@ -3,7 +3,6 @@ package no.kristiania.dao.model;
 public class AnswerAlternative extends AbstractModel {
     // TODO: possibly remove class
 
-    private long id;
     private String answerText;
     private long questionId;
 
@@ -22,9 +21,5 @@ public class AnswerAlternative extends AbstractModel {
 
     public long getQuestionId() {
         return questionId;
-    }
-
-    public void setQuestionId(long questionId) {
-        this.questionId = questionId;
     }
 }

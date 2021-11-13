@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.nio.file.Path;
 import java.util.HashMap;
 
-
 public class HttpServer implements Runnable {
     private ServerSocket serverSocket;
     private final int port;
@@ -23,10 +22,6 @@ public class HttpServer implements Runnable {
     public HttpServer() {
         this.port = 0;
         start();
-    }
-
-    public boolean containsPath(String path) {
-        return controllers.containsKey(path);
     }
 
     public void run() {
@@ -68,10 +63,6 @@ public class HttpServer implements Runnable {
 
     public void setRoot(Path rootPath) {
         this.rootPath = rootPath;
-    }
-
-    public Path getRootPath(){
-        return this.rootPath;
     }
 
     public void addController(String path, Controller controller) {

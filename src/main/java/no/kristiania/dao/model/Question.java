@@ -39,20 +39,8 @@ public class Question extends AbstractModel {
         this.questionText = questionText;
     }
 
-    public String getAnswerAlternative() {
-        return alternatives.remove(0);
-    }
-
-    public void addAnswerAlternative(String answerAlternative) {
-        alternatives.add(answerAlternative);
-    }
-
     public QuestionType getType() {
         return questionType;
-    }
-
-    public boolean hasAlternatives() {
-        return !alternatives.isEmpty();
     }
 
     public void setType(int questionType) {
