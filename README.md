@@ -28,7 +28,7 @@
 ## Dokumentasjon av kode
 
 * Et noe forenklet sekvensdiagram av hvordan et spørsmål legges til:
-![sekvensdiagram](https://drive.google.com/file/d/1YX0jwEs0Fj8nMHDmCerFtm_dS943d6Gm/view)
+![sekvensdiagram](https://drive.google.com/file/d/1YX0jwEs0Fj8nMHDmCerFtm_dS943d6Gm/view?usp=sharing)
 
 ## Dokumentasjon av prosess
 
