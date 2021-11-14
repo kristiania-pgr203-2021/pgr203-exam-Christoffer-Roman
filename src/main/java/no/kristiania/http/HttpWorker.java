@@ -59,8 +59,10 @@ public class HttpWorker implements Runnable {
 
         } catch (IOException | SQLException | RuntimeException e) {
             try {
+                Main.logger.info("Error occurred! Returning 500");
                 write(new HttpResponse(ResponseCode.ERROR, ResponseCode.ERROR.toString(), "text/plain"), socket);
             } catch (IOException ex) {
+                Main.logger.info("IOException! Thread is now shutting down, unable to return message to user");
                 System.out.println(e.getMessage());
             } finally {
                 e.printStackTrace();

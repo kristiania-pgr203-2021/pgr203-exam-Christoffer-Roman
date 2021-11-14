@@ -1,5 +1,6 @@
 package no.kristiania.http;
 
+import no.kristiania.Main;
 import no.kristiania.http.controllers.Controller;
 
 import java.io.IOException;
@@ -31,7 +32,8 @@ public class HttpServer implements Runnable {
             try {
                 socket = serverSocket.accept();
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                Main.logger.error("Exception when accepting incoming request. Server is shutting down.");
+                e.printStackTrace();
             }
             new Thread(new HttpWorker(this, socket)).start();
         }
@@ -42,7 +44,7 @@ public class HttpServer implements Runnable {
             serverSocket = new ServerSocket(port);
             running = true;
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            Main.logger.error("Exception when opening server socket. Server is shutting down.");
         }
     }
 
@@ -57,7 +59,8 @@ public class HttpServer implements Runnable {
         try {
             Thread.sleep(50);
         } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
+            Main.logger.error("Exception occurred. Server unable to sleep. Tests may have failed.");
+            e.printStackTrace();
         }
     }
 
