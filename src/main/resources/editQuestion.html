@@ -14,6 +14,10 @@
         <div id="output"></div>
         <button>Submit</button>
     </form>
+    <br><br>
+    <a href="allQuestions.html">Back to questions</a>
+    <br>
+    <a href="index.html">Back to front page</a>
 </main>
 
 
@@ -26,8 +30,9 @@
     const questionId = urlSearchParams.get("id");
     const questionTitle = urlSearchParams.get("questionTitle");
     const questionText = urlSearchParams.get("questionText");
+    const questionType = urlSearchParams.get("questionType");
 
-    fetch(`api/questions?id=${questionId}&questionTitle=${questionTitle}&questionText=${questionText}`)
+    fetch(`api/questions?id=${questionId}&questionTitle=${questionTitle}&questionText=${questionText}&questionType=${questionType}`)
         .then(function(response) {
             return response.text();
         }).then(function(text) {
