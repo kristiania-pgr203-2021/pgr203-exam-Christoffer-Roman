@@ -3,6 +3,7 @@ package no.kristiania;
 import no.kristiania.dao.AnswerAlternativeDao;
 import no.kristiania.dao.AnswerDao;
 import no.kristiania.dao.QuestionDao;
+import no.kristiania.dao.model.AnswerAlternative;
 import no.kristiania.http.HttpServer;
 import no.kristiania.http.controllers.AnswerAlternativesController;
 import no.kristiania.http.controllers.AnswersController;
@@ -31,7 +32,7 @@ public class Main {
         server.addController(AnswersController.PATH, new AnswersController(answerDao));
         server.addController(AnswerAlternativesController.PATH, new AnswerAlternativesController(alternativeDao));
         FileController fileController = new FileController();
-        for (String path : FileController.PATHS()) {
+        for (String path : FileController.PATHS) {
             server.addController(path, fileController);
         }
         logger.info("Server running on: http://localhost:"+ server.getPort());

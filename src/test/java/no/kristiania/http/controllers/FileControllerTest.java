@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FileControllerTest {
 
-    HttpServer server = new HttpServer();
+    private final HttpServer server = new HttpServer();
 
     @Test
     void shouldReturnExampleFile() throws IOException {

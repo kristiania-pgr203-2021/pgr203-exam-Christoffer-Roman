@@ -9,18 +9,19 @@ import no.kristiania.http.HttpResponse;
 import no.kristiania.http.ResponseCode;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AnswerAlternativesController implements Controller{
 
     public static final String PATH = "/api/questions/alternatives";
     private final AnswerAlternativeDao dao;
-    private HashMap<String, String> queryParameters;
+    private Map<String, String> queryParameters;
 
     public AnswerAlternativesController(AnswerAlternativeDao dao) {
         this.dao = dao;
     }
+
 
     @Override
     public HttpResponse handle(HttpRequest request) throws SQLException {

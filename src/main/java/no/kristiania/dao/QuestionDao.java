@@ -28,7 +28,6 @@ public class QuestionDao extends AbstractDao<Question> {
         return retrieveByIdString;
     }
 
-    @Override
     public String getRetrieveAllString() {
         return retrieveAllString;
     }

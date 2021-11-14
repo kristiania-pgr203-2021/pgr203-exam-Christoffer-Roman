@@ -12,13 +12,9 @@ import java.io.InputStream;
 import java.util.List;
 
 public class FileController implements Controller {
-    private static final List<String> PATHS = List.of("/index.html", "/addAnswer.html", "/addQuestion.html",
+    public static final List<String> PATHS = List.of("/index.html", "/addAnswer.html", "/addQuestion.html",
             "/allAnswers.html", "/allQuestions.html", "/editQuestion.html", "/style.css");
 
-
-    public static List<String> PATHS() {
-        return PATHS;
-    }
 
     @Override
     public HttpResponse handle(HttpRequest request) throws IOException {

@@ -9,30 +9,28 @@ import no.kristiania.http.HttpResponse;
 import no.kristiania.http.ResponseCode;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AnswersController implements Controller {
 
     public static final String PATH = "/api/answers";
     private AnswerDao dao;
-    private HashMap<String, String> queryParameters;
+    private Map<String, String> queryParameters;
 
     public AnswersController(AnswerDao dao) {
         this.dao = dao;
     }
 
+
     @Override
     public HttpResponse handle(HttpRequest request) throws SQLException {
 
         if (request.getMethod().equals(HttpMethod.GET)) {
-            Main.logger.info("All answers to one question returned to client");
             return get();
         } else if (request.getMethod().equals(HttpMethod.POST)) {
-            Main.logger.info("Answer saved, redirecting client");
             return post();
         }
-
         Main.logger.info("Client request method not allowed, returning 405");
         return new HttpResponse(ResponseCode.METHOD_NOT_ALLOWED, "Method Not Allowed", "text/plain");
     }
@@ -57,9 +55,11 @@ public class AnswersController implements Controller {
 
         Answer a  = new Answer(queryParameters.get("answerText"), Long.parseLong(queryParameters.get("questionId")));
         dao.save(a, dao.getSaveString());
-
+        Main.logger.info("Answer saved, redirecting client");
         HttpResponse response = new HttpResponse(ResponseCode.SEE_OTHER, "Redirecting", "text/plain");
         response.addHeader("Location", "/allQuestions.html");
+        Main.logger.info("All answers to one question returned to client");
+
         return response;
     }
 
