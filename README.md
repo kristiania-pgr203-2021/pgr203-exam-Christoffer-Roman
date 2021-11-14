@@ -134,7 +134,7 @@ Vi er fornøyde med egen besvarelse, og etter det som nå har blitt mange dager 
 ## Vedlegg: Sjekkliste for innlevering
 
 * [x] Dere har lest eksamensteksten
-* [ ] Dere har lastet opp en ZIP-fil med navn basert på navnet på deres Github repository
+* [x] Dere har lastet opp en ZIP-fil med navn basert på navnet på deres Github repository
 * [x] Koden er sjekket inn på github.com/pgr203-2021-repository
 * [x] Dere har committed kode med begge prosjektdeltagernes GitHub konto (alternativt: README beskriver arbeidsform)
 
