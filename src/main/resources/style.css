@@ -1,0 +1,12 @@
+div{
+    margin: 10px;
+}
+#regular{
+    display: block;
+}
+#multipleAnswers, #scale{
+    display: none;
+}
+html {
+    background-color: #AAF797;
+}

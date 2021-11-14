@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kristiania Questionnaire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+    <h1>Answer Question</h1>
+    <h2 id="questionTitle"></h2>
+    <h3 id="questionText"></h3>
+    <form action="/api/answers" method="post">
+        <input type="hidden" name="questionId" value="" id="questionId">
+        <div id="regular">
+            <p><label>Answer: <input id="answer" type="text" name="answerText"></label></p>
+        </div>
+        <label for="multipleAnswers">Answer: </label><select name="answerText" id="multipleAnswers"></select>
+        <button id="button">Submit</button>
+    </form>
+    <br><br>
+    <a href="allQuestions.html">Back to questions</a>
+    <br>
+    <a href="index.html">Back to front page</a>
+</main>
+<script>
+
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const questionId = urlSearchParams.get("id");
+    const questionTitle = urlSearchParams.get("questionTitle");
+    const questionText = urlSearchParams.get("questionText");
+    const questionType = urlSearchParams.get("questionType");
+    const regular = document.getElementById("regular");
+    const multipleAnswers = document.getElementById("multipleAnswers");
+
+    document.getElementById("questionTitle").innerHTML = questionTitle;
+    document.getElementById("questionText").innerHTML = questionText;
+    document.getElementById("questionId").value = questionId;
+
+    if (questionType === "1") {
+        regular.style.display = "none";
+        multipleAnswers.style.display = "block";
+        retrieveOptions();
+    } else if (questionType == "2") {
+        regular.style.display = "none";
+        multipleAnswers.style.display = "block";
+        for (i = 0; i <= 5; i++) {
+            multipleAnswers.innerHTML += `
+                <option value="${i}">${i}</option>
+            `;
+        }
+    }
+
+    function retrieveOptions() {
+        fetch(`api/questions/alternatives?id=${questionId}`)
+            .then(function (response) {
+                return response.text();
+            }).then(function (text) {
+            multipleAnswers.innerHTML = text;
+                console.log(text);
+        });
+    }
+
+</script>
+
+</body>
+</html>

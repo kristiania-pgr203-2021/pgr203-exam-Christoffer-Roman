@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kristiania Questionnaire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <h1>Add new question</h1>
+        <div>
+            <label>What type of question is this?</label>
+            <select name="type" id="questionType">
+                <optgroup label="What type of question is this?">
+                    <option selected value="0">Regular</option>
+                    <option value="1">Multiple Answers</option>
+                    <option value="2">Scale</option>
+                </optgroup>
+            </select>
+        </div>
+        <div>
+            <form id="regular" action="/api/questions" method="post">
+                <input type="hidden" name="dbAction" value="save">
+                <p><label>Title: <input type="text" name="questionTitle"></label></p>
+                <p><label>Question: <input type="text" name="questionText"></label></p>
+                <button>Submit</button>
+            </form>
+        </div>
+        </div>
+            <form id="multipleAnswers" action="/api/questions" method="post">
+                <input type="hidden" name="dbAction" value="multipleAnswers">
+                <p><label>Title: <input type="text" name="questionTitle"></label></p>
+                <p><label>Question: <input type="text" name="questionText"></label></p>
+                <label>How many answers?</label>
+                <select id="countOfAnswers">
+                    <option selected value="2">2</option>
+                </select>
+                <div name="answers" id="answers">
+                    <label>Answer 1</label>
+                    <input name="answer1" type="text">
+                    <label>Answer 2</label>
+                    <input name="answer2" type="text">
+                </div>
+                <button id="multipleAnswersBtn">Submit</button>
+            </form>
+        </div>
+        </div>
+            <form id="scale" action="/api/questions" method="post">
+                <input type="hidden" name="dbAction" value="scale">
+                <p><label>Title: <input type="text" name="questionTitle"></label></p>
+                <p><label>Question: <input type="text" name="questionText"></label></p>
+
+                <button>Submit</button>
+            </form>
+        </div>
+        <br><br>
+        <a href="allQuestions.html">See all questions</a>
+        <br>
+        <a href="index.html">Back to front page</a>
+    </main>
+<script>
+    const regularForm = document.getElementById("regular");
+    const multipleForm = document.getElementById("multipleAnswers");
+    const multipleBtn = document.getElementById("multipleAnswersBtn");
+    const scaleForm = document.getElementById("scale");
+    const selector = document.getElementById("questionType");
+    const countSelector = document.getElementById("countOfAnswers");
+
+    selector.onchange = switchQuestionType
+    countSelector.onchange = countOfAnswers;
+    multipleBtn.onclick
+
+    const forms = [regularForm, multipleForm, scaleForm];
+
+    for (let i = 3; i <= 5; i++) {
+        countSelector.innerHTML += `<option value="${i}">${i}</option>`;
+    }
+
+    function countOfAnswers() {
+        const countOfAnswersWanted = countSelector.value;
+        const answers = document.getElementById("answers");
+        answers.innerHTML = "";
+        for (let i = 1; i <= countOfAnswersWanted; i++) {
+            answers.innerHTML += `<label>Answer ${i}</label><input name="answer${i}" type="text">`;
+        }
+    }
+
+    function switchQuestionType() {
+        const index = parseInt(selector.value);
+        forms.forEach(form => form.style.display = "none");
+        forms[index].style.display = "block";
+    }
+
+</script>
+
+</body>
+</html>
