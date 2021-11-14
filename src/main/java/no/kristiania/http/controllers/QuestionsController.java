@@ -120,6 +120,7 @@ public class QuestionsController implements Controller {
         );
         dao.save(q, dao.getSaveString());
 
+        Main.logger.info("Question saved, redirecting client");
         return redirectResponse("/allQuestions.html");
     }
 
